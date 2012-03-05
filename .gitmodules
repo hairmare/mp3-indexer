@@ -1,0 +1,6 @@
+[submodule "lib/sf-event-dispatcher"]
+	path = lib/sf-event-dispatcher
+	url = https://github.com/fabpot/event-dispatcher.git
+[submodule "lib/sf-dependency-injection"]
+	path = lib/sf-dependency-injection
+	url = https://github.com/fabpot/dependency-injection.git
