@@ -1,0 +1,6 @@
+#!/usr/bin/php
+<?php
+
+require_once dirname(__FILE__).'/../src/bootstrap.php';
+
+$sc->mp3indexer->run();
