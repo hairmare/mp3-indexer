@@ -29,18 +29,21 @@ class Mp3Indexer_Reader
      * @param sfEventDispatcher $dispatcher main event dispatcher
      * @param sfEvent           $linter     filter event for linting
      * @param sfEvent           $dataEvent  event for storage dispatch
+     * @param sfEvent           $logEvent   logging event
      *
      * @return void
      */
     public function __construct (
         sfEventDispatcher $dispatcher,
         sfEvent $linter,
-        sfEvent $dataEvent
+        sfEvent $dataEvent,
+        sfEvent $logEvent
     ) {
         $this->_dispatcher = $dispatcher;
         $this->_dispatcher->connect('mp3scan.file', array($this, 'read'));
         $this->_linter = $linter;
         $this->_dataEvent = $dataEvent;
+        $this->_logEvent = $logEvent;
     }
 
     /**
@@ -57,14 +60,19 @@ class Mp3Indexer_Reader
         // lint them files
         $event = clone $this->_linter;
         $this->_dispatcher->filter($event, $file);
-        $file = $event->getReturnValue();
 
-        if ($file !== false) {
+        if ($event->getReturnValue()) {
             $data = id3_get_tag($file->getPathname(), ID3_V2_4);
 
             $event = clone $this->_dataEvent;
             $event['file'] = $file;
             $event['data'] = $data;
+            $this->_dispatcher->notify($event);
+        } else {
+            $event = clone $this->_logEvent;
+            $event['type'] = 'warning';
+            $event['message'] = 'Reader skipped file';
+            $event['file'] = $file;
             $this->_dispatcher->notify($event);
         }
     }

@@ -19,6 +19,8 @@ require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
 require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Store.php';
@@ -30,9 +32,17 @@ sfServiceContainerAutoloader::register();
 $sc = new sfServiceContainerBuilder(
     array(
         'mp3root' => $_SERVER['HOME'],
-        'eyeD3.bin' => 'eyeD3'
+        'eyeD3.bin' => 'eyeD3',
+        'db.dsn' => 'mysql:host=localhost;port=3306;dbname=test',
+        'db.user' => 'test',
+        'db.pass' => null
     )
 );
+
+// pull in additional config
+if (file_exists(dirname(__FILE__).'/../localConf.php')) {
+    @include_once dirname(__FILE__).'/../localConf.php';
+}
 
 $sc->register('dispatcher', 'sfEventDispatcher');
 
@@ -52,6 +62,23 @@ $sc->register('mp3lintevent', 'sfEvent')
 $sc->register('mp3dataevent', 'sfEvent')
     ->addArgument(new stdClass)
     ->addArgument('mp3scan.data');
+$sc->register('logevent', 'sfEvent')
+    ->addArgument(new stdClass)
+    ->addArgument('log');
+
+// need for db config
+$sc->register('pdoconn', 'PDO')
+    ->addArgument('%db.dsn%')
+    ->addArgument('%db.user%')
+    ->addArgument('%db.pass%')
+    ->addMethodCall(
+        'setAttribute',
+        array(
+            PDO::ATTR_ERRMODE,
+            PDO::ERRMODE_EXCEPTION
+        )
+    );
+
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
     ->addArgument(new sfServiceReference('audiofilteriterator'))
@@ -60,14 +87,28 @@ $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
 $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('mp3lintevent'))
-    ->addArgument(new sfServiceReference('mp3dataevent'));
+    ->addArgument(new sfServiceReference('mp3dataevent'))
+    ->addArgument(new sfServiceReference('logevent'));
 $sc->register('mp3store', 'Mp3Indexer_Store')
-    ->addArgument(new sfServiceReference('dispatcher'));
+    ->addArgument(new sfServiceReference('dispatcher'))
+    ->addArgument(new sfServiceReference('pdoconn'))
+    ->addArgument(new sfServiceReference('logevent'));
+
+// linting
 $sc->register('mp3lint.id3v34', 'Mp3Indexer_Linter_ID3V24')
     ->addArgument(new sfServiceReference('dispatcher'));
+
+// loggers
+$sc->register('logstdout', 'Mp3Indexer_Log_Stdout')
+    ->addArgument(new sfServiceReference('dispatcher'));
+
 // as well as something to tie everything together
 $sc->register('mp3indexer', 'Mp3Indexer')
     ->addArgument(new sfServiceReference('mp3scanner'))
     ->addArgument(new sfServiceReference('mp3reader'))
     ->addArgument(new sfServiceReference('mp3store'))
-    ->addArgument(array(new sfServiceReference('mp3lint.id3v34')));
+    ->addArgument(array(new sfServiceReference('mp3lint.id3v34')))
+    ->addMethodCall(
+        'addLogger',
+        array(new sfServiceReference('logstdout'))
+    );
