@@ -116,12 +116,12 @@ class Mp3Indexer_Store
     /**
      * convert and insert found tags
      *
-     * @param Object  $value a Zend_Media_* instance
-     * @param Integer $id    id of corresponding file record
+     * @param Object  $value  a Zend_Media_* instance
+     * @param Integer $fileId id of corresponding file record
      *
      * @return void
      */
-    private function _insertTags($value, $id)
+    private function _insertTags($value, $fileId)
     {
         $stmts = $this->_stmts;
         $tagName = $value->getIdentifier();
@@ -158,7 +158,7 @@ class Mp3Indexer_Store
         foreach ($tagValues AS $text) {
             $stmts['id3.insert']->bindParam(
                 'audioFile_id',
-                $id
+                $fileId
             );
             $stmts['id3.insert']->bindParam('tag', $tagName);
             $stmts['id3.insert']->bindParam('value', $text);

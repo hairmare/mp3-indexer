@@ -47,6 +47,7 @@ class Mp3Indexer_Linter_ID3V24
      */
     public function lint($event, SplFileInfo $file)
     {
+        $this->_event = $event;
         if (id3_get_version($file->getPathname()) != ID3_V2_4 ) {
             return false;
         }
