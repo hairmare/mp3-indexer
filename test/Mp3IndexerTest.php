@@ -19,28 +19,28 @@ class Mp3IndexerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-		$this->scannerMock = $this->getMockBuilder('Mp3Indexer_Scanner')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->readerMock = $this->getMockBuilder('Mp3Indexer_Reader')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->storeMock = $this->getMockBuilder('Mp3Indexer_Store')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->linterMock = $this->getMockBuilder('stclass')
-			->disableOriginalConstructor()
-			->getMock();
+        $this->scannerMock = $this->getMockBuilder('Mp3Indexer_Scanner')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->readerMock = $this->getMockBuilder('Mp3Indexer_Reader')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->storeMock = $this->getMockBuilder('Mp3Indexer_Store')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->linterMock = $this->getMockBuilder('stclass')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->object = new Mp3Indexer(
-   			$this->scannerMock,
-			$this->readerMock,
-			$this->storeMock,
-			array(
-				$this->linterMock
-			)
-		);
- 	}
+            $this->scannerMock,
+            $this->readerMock,
+            $this->storeMock,
+            array(
+                $this->linterMock
+            )
+        );
+     }
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -51,40 +51,41 @@ class Mp3IndexerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-	 * @covers Mp3Indexer::__construct
+     * @covers Mp3Indexer::__construct
      */
     public function testConstructor()
     {
-		new Mp3Indexer(
-			$this->scannerMock,
-			$this->readerMock,
-			$this->storeMock,
-			array(
-				$this->linterMock
-			)
-		);
+        new Mp3Indexer(
+            $this->scannerMock,
+            $this->readerMock,
+            $this->storeMock,
+            array(
+                $this->linterMock
+            )
+        );
     }
 
     /**
-     * @todo Implement testAddLogger().
+     * @covers Mp3Indexer::addLogger
      */
     public function testAddLogger()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $loggerMock = $this->getMockBuilder('Mp3Indexer_Log_Interface')->getMock();
+
+        $this->object->addLogger($loggerMock);
+
+        $this->assertSame($this->object->_loggerStack[0], $loggerMock);
     }
 
     /**
-     * @todo Implement testRun().
+     * @covers Mp3Indexer::run
      */
     public function testRun()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->scannerMock
+            ->expects($this->once())
+            ->method('scan');
+
+        $this->object->run();
     }
 }
-?>
