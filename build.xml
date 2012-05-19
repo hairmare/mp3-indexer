@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<project name="mp3-indexer" default="test">
+<!-- 
+    Main Buildfile used by jenkins  to interact with the system.
+-->
+
+    <!-- -->
+    <target name="build">
+		<exec executable="rm">
+			<arg value="-rf"/>
+			<arg value="build/"/>
+		</exec>
+		<mkdir dir="build/"/>
+    </target>
+
+    <!--
+    -->
+    <target name="test">
+        <exec executable="phpcs">
+            <arg value="-s"/> <!-- Show sniff codes in all reports -->
+            <arg value="--standard=PEAR"/>
+            <arg value="--ignore=README.md"/>
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=build/checkstyle.xml"/>
+            <!-- dirs to scan -->
+            <arg value="src/"/>
+            <arg value="test/"/>
+        </exec>
+        <exec executable="phpmd">
+            <!-- dirs to scan -->
+            <arg value="src,test"/>
+            <arg value="xml"/>
+            <arg value="codesize,design,naming,unusedcode"/>
+            <arg value="--reportfile"/>
+            <arg value="build/pmd.xml"/>
+        </exec>
+        <exec dir="${basedir}" executable="phpunit">
+            <arg value="-c"/>
+            <arg value="phpunit.xml"/>
+            <!-- doesnt work from xml for some reason -->
+            <arg value="--log-junit"/>
+            <arg value="junit.xml"/>
+        </exec>
+        <exec executable="mv"> <!-- lol wut, I'll try removing this later -->
+            <arg value="junit.xml"/>
+            <arg value="build/junit.xml"/>
+        </exec>
+    </target>
+
+    <!--
+    -->
+    <target name="docs">
+    </target>
+
+    <!--
+    -->
+    <target name="deploy-local">
+    </target>
+
+    <!-- 
+         Deploy to webhost dir
+
+         This is used for building further packages that get deployed
+         everywhere else
+    -->
+    <target name="deploy-web">
+        <exec executable="cat" outputproperty="version">
+            <arg value="VERSION"/>
+        </exec>
+        <exec executable="cp" failonerror="true">
+            <arg value="build/mp3-indexer-${version}.tar.bz2"/>
+            <arg value="/var/www/distfile-repo.jenkins-01.hq.rabe.ch/htdocs/"/>
+        </exec>
+    </target>
+
+    <target name="pkg">
+        <exec executable="cat" outputproperty="version">
+            <arg value="VERSION"/>
+        </exec>
+        <tar destfile="build/mp3-indexer-${version}.tar.bz2" 
+             basedir="." compression="bzip2"
+             excludes="build/**,**/services.xml"/>
+    </target>
+
+    <target name="bump-version">
+        <exec executable="awk" failonerror="true" output="VERSION">
+            <arg value="-F." />
+            <arg value='1{$NF+=1; OFS="."; print $0}'/>
+            <arg value="VERSION"/>
+        </exec>
+        <exec executable="git" failonerror="true">
+            <arg value="commit"/>
+            <arg value="-m"/>
+            <arg value="version bump"/>
+            <arg value="VERSION"/>
+        </exec>
+    </target>
+
+
+</project>

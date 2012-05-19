@@ -8,7 +8,9 @@ many indexers i tried so far do with my corpus.
 This is still in its infancy and it only dumps the data into
 an sql database without performing much indexing.
 
-create a localConf.php with the following values to try it:
+You will need to install php-reader 
+
+Create a localConf.php with the following values to try it out:
 
 <?php
 
