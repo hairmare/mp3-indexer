@@ -34,7 +34,7 @@ class Mp3Indexer_ReaderImplFactory
      */
     static function getReader($file)
     {
-        $readerClass = Mp3Indexer_ReaderImplFactory::READER_CLASSNAME:
+        $readerClass = Mp3Indexer_ReaderImplFactory::READER_CLASSNAME;
         return new $readerClass($file);
     }
 }
