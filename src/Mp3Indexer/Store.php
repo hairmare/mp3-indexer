@@ -50,10 +50,10 @@ class Mp3Indexer_Store
      */
     public function createOrUpdate(sfEvent $event)
     {
-        static $stmts = false;
-        if (!$stmts) {
-            $stmts = $this->_prepareStatements();
+        if (!$this->_stmts) {
+            $this->_stmts = $this->_prepareStatements();
         }
+		$stmts = $this->_stmts;
         $file = $event['file'];
         $data = $event['data'];
 
@@ -68,48 +68,9 @@ class Mp3Indexer_Store
             $stmts['file.insert']->execute();
 
             $lastInsertId = $this->_pdo->lastInsertId();
-            foreach ($data AS $tag => $value) {
 
-                $tagName = $value->getIdentifier();
-
-                /* delegate datampping 
-                $event = clone $this->_filterEvent;
-                $this->_dispatcher->filter($event, $value);
-                $value = $event->getReturnValue();
-                */
-
-                if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
-                    $tagValues = $value->getTexts();
-                } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
-                    $tagValues = array($value->getLink());
-                } else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
-                    // @todo implement serious loading
-                    $tagValues = array($value->getOwner());
-                } else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
-                    // @todo implement picture loading
-                    $tagValues = array($value->getImageType());
-                } else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
-                    // @todo implement serious loading
-                    $tagValues = array(
-                        $value->getDescription().' : '.$value->getText()
-                    );
-                } else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
-                    // @todo do we need all these
-                    $tagValues = array(
-                        $value->getOwner().' : '.$value->getData()
-                    );
-                } else {
-                    $tagValues = array(var_export($value, true));
-                }
-                foreach ($tagValues AS $text) {
-                    $stmts['id3.insert']->bindParam(
-                        'audioFile_id',
-                        $lastInsertId
-                    );
-                    $stmts['id3.insert']->bindParam('tag', $tagName);
-                    $stmts['id3.insert']->bindParam('value', $text);
-                    $stmts['id3.insert']->execute();
-                }
+            foreach ($data AS $value) {
+				$this->_insertTags($value, $lastInsertId);
             }
         } catch (Exception $e) {
             $this->_pdo->rollback();
@@ -150,5 +111,58 @@ class Mp3Indexer_Store
             '
         );
         return $stmts;
+    }
+
+	/**
+	 * convert and insert found tags
+	 *
+	 * @param Object  $value a Zend_Media_* instance
+	 * @param Integer $id    id of corresponding file record
+	 *
+	 * @return void
+	 */
+	private function _insertTags($value, $id)
+	{
+		$stmts = $this->_stmts;
+	    $tagName = $value->getIdentifier();
+
+        /* delegate datampping 
+        $event = clone $this->_filterEvent;
+        $this->_dispatcher->filter($event, $value);
+        $value = $event->getReturnValue();
+        */
+
+        if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
+            $tagValues = $value->getTexts();
+        } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
+            $tagValues = array($value->getLink());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
+            // @todo implement serious loading
+            $tagValues = array($value->getOwner());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
+            // @todo implement picture loading
+            $tagValues = array($value->getImageType());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
+            // @todo implement serious loading
+            $tagValues = array(
+                $value->getDescription().' : '.$value->getText()
+            );
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
+            // @todo do we need all these
+            $tagValues = array(
+                $value->getOwner().' : '.$value->getData()
+            );
+        } else {
+            $tagValues = array(var_export($value, true));
+        }
+        foreach ($tagValues AS $text) {
+            $stmts['id3.insert']->bindParam(
+                'audioFile_id',
+                $id
+            );
+            $stmts['id3.insert']->bindParam('tag', $tagName);
+            $stmts['id3.insert']->bindParam('value', $text);
+            $stmts['id3.insert']->execute();
+        }
     }
 }
