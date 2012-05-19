@@ -53,7 +53,7 @@ class Mp3Indexer_Store
         if (!$this->_stmts) {
             $this->_stmts = $this->_prepareStatements();
         }
-		$stmts = $this->_stmts;
+        $stmts = $this->_stmts;
         $file = $event['file'];
         $data = $event['data'];
 
@@ -70,7 +70,7 @@ class Mp3Indexer_Store
             $lastInsertId = $this->_pdo->lastInsertId();
 
             foreach ($data AS $value) {
-				$this->_insertTags($value, $lastInsertId);
+                $this->_insertTags($value, $lastInsertId);
             }
         } catch (Exception $e) {
             $this->_pdo->rollback();
@@ -113,18 +113,18 @@ class Mp3Indexer_Store
         return $stmts;
     }
 
-	/**
-	 * convert and insert found tags
-	 *
-	 * @param Object  $value a Zend_Media_* instance
-	 * @param Integer $id    id of corresponding file record
-	 *
-	 * @return void
-	 */
-	private function _insertTags($value, $id)
-	{
-		$stmts = $this->_stmts;
-	    $tagName = $value->getIdentifier();
+    /**
+     * convert and insert found tags
+     *
+     * @param Object  $value a Zend_Media_* instance
+     * @param Integer $id    id of corresponding file record
+     *
+     * @return void
+     */
+    private function _insertTags($value, $id)
+    {
+        $stmts = $this->_stmts;
+        $tagName = $value->getIdentifier();
 
         /* delegate datampping 
         $event = clone $this->_filterEvent;
