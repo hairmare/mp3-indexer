@@ -17,12 +17,11 @@ ini_set(
     dirname(__FILE__).'/../lib/php-reader/src/:'.ini_get('include_path')
 );
 
+require_once 'Zend/Media/Id3v2.php';
 require_once dirname(__FILE__).
     '/../lib/sf-dependency-injection/lib/sfServiceContainerAutoloader.php';
 require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
-require_once dirname(__FILE__).
-    '/../lib/php-reader/src/Zend/Media/Id3v2.php';
 require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
