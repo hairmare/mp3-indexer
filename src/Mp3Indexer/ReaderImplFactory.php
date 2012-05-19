@@ -1,10 +1,10 @@
 <?php
 /**
- * file extension filter
+ * file reader
  *
  * PHP Version 5
  *
- * @category  Scanner
+ * @category  Reader
  * @package   Mp3Indexer
  * @author    Lucas S. Bickel <hairmare@purplehaze.ch>
  * @copyright 2012 - Alle Rechte vorbehalten
@@ -13,33 +13,28 @@
  */
 
 /**
- * Filter for distinguishing audio files
+ * factory for getting reader instances
  *
- * @category Scanner
+ * @category Reader
  * @package  Mp3Indexer
  * @author   Lucas S. Bickel <hairmare@purplehaze.ch>
  * @license  GPL http://www.gnu.org/licenses/gpl-3.0.txt
  * @link     http://github.com/purplehazech/mp3-indexer
  */
-class Mp3Indexer_AudioFileRecursiveFilterIterator extends RecursiveFilterIterator
+class Mp3Indexer_ReaderImplFactory
 {
-    public static $FILTERS = array(
-        'mp3',
-    );
+    const READER_CLASSNAME = 'Zend_Media_Id3v2';
 
     /**
-     * only allow folders and accepted files
+     * open a file with READER_CLASSNAME
      *
-     * @return Boolean
+     * @param String $file File to open
+     *
+     * @return self::READER_CLASSNAME
      */
-    public function accept()
+    static function getReader($file)
     {
-         return $this->hasChildren() || in_array(
-             strtolower($this->current()->getExtension()),
-             self::$FILTERS,
-             true
-         );
+        $readerClass = Mp3Indexer_ReaderImplFactory::READER_CLASSNAME:
+        return new $readerClass($file);
     }
-
 }
-

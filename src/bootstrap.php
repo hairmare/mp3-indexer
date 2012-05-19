@@ -12,16 +12,23 @@
  * @link      http://github.com/purplehazech/mp3-indexer
  */
 
+ini_set(
+    'include_path',
+    dirname(__FILE__).'/../lib/php-reader/src/:'.ini_get('include_path')
+);
 
 require_once dirname(__FILE__).
     '/../lib/sf-dependency-injection/lib/sfServiceContainerAutoloader.php';
 require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
+require_once dirname(__FILE__).
+    '/../lib/php-reader/src/Zend/Media/Id3v2.php';
 require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
+require_once dirname(__FILE__).'/Mp3Indexer/ReaderImplFactory.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Store.php';
 require_once dirname(__FILE__).'/Mp3Indexer.php';
@@ -39,9 +46,11 @@ $sc = new sfServiceContainerBuilder(
     )
 );
 
+ini_set('memory_limit', -1);
+
 // pull in additional config
 if (file_exists(dirname(__FILE__).'/../localConf.php')) {
-    @include_once dirname(__FILE__).'/../localConf.php';
+    include_once dirname(__FILE__).'/../localConf.php';
 }
 
 $sc->register('dispatcher', 'sfEventDispatcher');
@@ -79,6 +88,9 @@ $sc->register('pdoconn', 'PDO')
         )
     );
 
+// wrapper for reading mps data
+$sc->register('readerimplfactory', 'Mp3Indexer_ReaderImplFactory');
+
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
     ->addArgument(new sfServiceReference('audiofilteriterator'))
@@ -88,7 +100,8 @@ $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('mp3lintevent'))
     ->addArgument(new sfServiceReference('mp3dataevent'))
-    ->addArgument(new sfServiceReference('logevent'));
+    ->addArgument(new sfServiceReference('logevent'))
+    ->addArgument(new sfServiceReference('readerimplfactory'));
 $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('pdoconn'))
