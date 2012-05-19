@@ -19,8 +19,28 @@ class Mp3IndexerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Mp3Indexer;
-    }
+		$this->scannerMock = $this->getMockBuilder('Mp3Indexer_Scanner')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->readerMock = $this->getMockBuilder('Mp3Indexer_Reader')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->storeMock = $this->getMockBuilder('Mp3Indexer_Store')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->linterMock = $this->getMockBuilder('stclass')
+			->disableOriginalConstructor()
+			->getMock();
+
+        $this->object = new Mp3Indexer(
+   			$this->scannerMock,
+			$this->readerMock,
+			$this->storeMock,
+			array(
+				$this->linterMock
+			)
+		);
+ 	}
 
     /**
      * Tears down the fixture, for example, closes a network connection.
@@ -28,6 +48,21 @@ class Mp3IndexerTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+    }
+
+    /**
+	 * @covers Mp3Indexer::__construct
+     */
+    public function testConstructor()
+    {
+		new Mp3Indexer(
+			$this->scannerMock,
+			$this->readerMock,
+			$this->storeMock,
+			array(
+				$this->linterMock
+			)
+		);
     }
 
     /**
