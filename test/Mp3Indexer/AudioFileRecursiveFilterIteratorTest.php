@@ -58,7 +58,7 @@ class Mp3Indexer_AudioFileRecursiveFilterIteratorTest
     public function testAccept()
     {
         $this->recursorMock
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('hasChildren')
             ->will($this->onConsecutiveCalls(true, false, false));
 
