@@ -27,20 +27,22 @@ require_once __DIR__.'/../../src/Mp3Indexer/ReaderImplFactory.php';
 class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-	 * Test for instances of registered reader class
+     * Test for instances of registered reader class
      *
      * @returns void
      */
     public function testGetReader()
     {
-		// setup quick and dirty mock
-		Mp3Indexer_ReaderImplFactory::$READER_CLASSNAME = 'Mp3Indexer_ReaderImplFactoryTest_Reader';
-		$filename = 'testfile.php';
+        // setup quick and dirty mock
+        Mp3Indexer_ReaderImplFactory::$READER_CLASSNAME 
+            = 'Mp3Indexer_ReaderImplFactoryTest_Reader';
 
-		$reader = Mp3Indexer_ReaderImplFactory::getReader($filename);
+        $filename = 'testfile.php';
 
-		$this->assertInstanceOf('Mp3Indexer_ReaderImplFactoryTest_Reader', $reader);
-		$this->assertEquals($filename, $reader->file);
+        $reader = Mp3Indexer_ReaderImplFactory::getReader($filename);
+
+        $this->assertInstanceOf('Mp3Indexer_ReaderImplFactoryTest_Reader', $reader);
+        $this->assertEquals($filename, $reader->file);
     }
 }
 
@@ -55,8 +57,8 @@ class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
  */
 class Mp3Indexer_ReaderImplFactoryTest_Reader
 {
-	public function __construct($file)
-	{
-		$this->file = $file;
-	}
+    public function __construct($file)
+    {
+        $this->file = $file;
+    }
 }
