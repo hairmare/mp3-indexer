@@ -23,18 +23,18 @@
  */
 class Mp3Indexer_ReaderImplFactory
 {
-    const READER_CLASSNAME = 'Zend_Media_Id3v2';
+    static $READER_CLASSNAME = 'Zend_Media_Id3v2';
 
     /**
      * open a file with READER_CLASSNAME
      *
      * @param String $file File to open
      *
-     * @return self::READER_CLASSNAME
+     * @return self::$READER_CLASSNAME
      */
     static function getReader($file)
     {
-        $readerClass = Mp3Indexer_ReaderImplFactory::READER_CLASSNAME;
+        $readerClass = Mp3Indexer_ReaderImplFactory::$READER_CLASSNAME;
         return new $readerClass($file);
     }
 }
