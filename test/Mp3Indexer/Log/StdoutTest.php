@@ -60,7 +60,7 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $this->dispatcherMock
-            ->exects($this->once())
+            ->expects($this->once())
             ->method('connect');
 
         new Mp3Indexer_Log_Stdout(
