@@ -27,7 +27,7 @@ require_once __DIR__.'/../../src/Mp3Indexer/ReaderImplFactory.php';
 class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @todo Implement testGetReader().
+	 * Test for instances of registered reader class
      *
      * @returns void
      */
@@ -39,7 +39,7 @@ class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
 
 		$reader = Mp3Indexer_ReaderImplFactory::getReader($filename);
 
-		$this->assertType('Mp3Indexer_ReaderImplFactoryTest_Reader', $reader);
+		$this->assertInstanceOf('Mp3Indexer_ReaderImplFactoryTest_Reader', $reader);
 		$this->assertEquals($filename, $reader->file);
     }
 }
