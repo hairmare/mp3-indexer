@@ -24,7 +24,8 @@ require_once __DIR__.'/../../src/Mp3Indexer/AudioFileRecursiveFilterIterator.php
  * @license  GPL http://www.gnu.org/licenses/gpl-3.0.txt
  * @link     http://github.com/purplehazech/mp3-indexer
  */
-class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_TestCase
+class Mp3Indexer_AudioFileRecursiveFilterIteratorTest
+    extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Mp3Indexer_AudioFileRecursiveFilterIterator
@@ -48,7 +49,7 @@ class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_
     }
 
     /**
-     * @todo Implement testAccept().
+     * check if accept method behaves
      *
      * @covers Mp3Indexer_AudioFileRecursiveFilterIterator::accept
      *
@@ -61,8 +62,8 @@ class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_
             ->method('hasChildren')
             ->will($this->onConsecutiveCalls(true, false, false));
 
-        $this->assertEquals('test', $this->object->accept('test'));
-        $this->assertEquals('test.mp3', $this->object->accept('test.mp3'));
+        $this->assertTrue($this->object->accept('test'));
+        $this->assertTrue($this->object->accept('test.mp3'));
         $this->assertFalse($this->object->accept('test.php'));
     }
 }
