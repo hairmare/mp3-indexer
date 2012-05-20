@@ -86,9 +86,9 @@ class Mp3Indexer_Reader
 
         if ($logError) {
             $event = clone $this->_logEvent;
-            $event['type'] = 'warning';
-            $event['message'] = $logMessage;
-            $event['file'] = $file;
+            $event->type = 'warning';
+            $event->message = $logMessage;
+            $event->file = $file;
             $this->_dispatcher->notify($event);
         }
     }

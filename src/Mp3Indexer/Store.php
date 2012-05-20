@@ -76,8 +76,8 @@ class Mp3Indexer_Store
             $this->_pdo->rollback();
             // trigger error log event
             $event = clone $this->_logEvent;
-            $event['type'] = 'error';
-            $event['message'] = $e->getMessage();
+            $event->type = 'error';
+            $event->message = $e->getMessage();
             $this->_dispatcher->notify($event);
             return false;
         }

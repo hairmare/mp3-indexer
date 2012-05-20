@@ -46,8 +46,8 @@ class Mp3Indexer_Log_Stdout implements Mp3Indexer_Log_Interface
      */
     public function logEvent(sfEvent $event)
     {
-        if ($event['type'] == 'error') {
-            printf("Message: %s\n", $event['message']);
+        if ($event->type == 'error') {
+            printf("Message: %s\n", $event->message);
         }
     }
 }
