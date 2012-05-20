@@ -27,6 +27,11 @@ require_once __DIR__.'/../../src/Mp3Indexer/AudioFileRecursiveFilterIterator.php
 class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var Mp3Indexer_AudioFileRecursiveFilterIterator
+     */
+    var $object;
+
+    /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
@@ -34,8 +39,12 @@ class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_
      */
     protected function setUp()
     {
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory(__DIR__.'/../fixtures/testDir'));
+        $this->recursorMock = $this->getMockBuilder('RecursiveDirectoryIterator')
+            ->disableOriginalConstructor()->getMock();
+
+        $this->object = new Mp3Indexer_AudioFileRecursiveFilterIterator(
+            $this->recursorMock
+        );
     }
 
     /**
@@ -47,21 +56,13 @@ class Mp3Indexer_AudioFileRecursiveFilterIteratorTest extends PHPUnit_Framework_
      */
     public function testAccept()
     {
-        $iterator = Mp3Indexer_AudioFileRecursiveFilterIterator(
-            new RecursiveDirectoryIterator(
-                vfsStreamWrapper::getRoot()
-            )
-        );
-        $this->assertTrue($iterator->hasChildren());
+        $this->recursorMock
+            ->expects($this->once())
+            ->method('hasChildren')
+            ->will($this->onConsecutiveCalls(true, false, false));
 
-        $files = array();
-        foreach ($iterator->getChildren() AS $kid) {
-            foreach ($kid AS $file) {
-                $files[] = $file;
-            }
-        }
-
-        $this->assertContains('test1.mp3', $file);
-        $this->assertContains('test2.mp3', $file);
+        $this->assertEquals('test', $this->object->accept('test'));
+        $this->assertEquals('test.mp3', $this->object->accept('test.mp3'));
+        $this->assertFalse($this->object->accept('test.php'));
     }
 }
