@@ -29,7 +29,9 @@ class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
     /**
      * Test for instances of registered reader class
      *
-     * @returns void
+     * @covers Mp3Indexer_ReaderImplFactory::getReader
+     *
+     * @return void
      */
     public function testGetReader()
     {
@@ -39,15 +41,17 @@ class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
 
         $filename = 'testfile.php';
 
+        // run stuff
         $reader = Mp3Indexer_ReaderImplFactory::getReader($filename);
 
+        // check stuff
         $this->assertInstanceOf('Mp3Indexer_ReaderImplFactoryTest_Reader', $reader);
         $this->assertEquals($filename, $reader->file);
     }
 }
 
 /**
- * helper class fpr mocking the Zend_Media_Id3 interface
+ * helper class for mocking the Zend_Media_Id3 interface
  *
  * @category Test
  * @package  Mp3Indexer
@@ -57,6 +61,11 @@ class Mp3Indexer_ReaderImplFactoryTest extends PHPUnit_Framework_TestCase
  */
 class Mp3Indexer_ReaderImplFactoryTest_Reader
 {
+    /**
+     * same interface as the reader has
+     * 
+     * @param String $file file name
+     */
     public function __construct($file)
     {
         $this->file = $file;
