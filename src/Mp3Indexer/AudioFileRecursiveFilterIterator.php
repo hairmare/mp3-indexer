@@ -45,7 +45,7 @@ class Mp3Indexer_AudioFileRecursiveFilterIterator extends RecursiveFilterIterato
      *
      * @return Boolean
      */
-    public function _hasFileMatch()
+    private function _hasFileMatch()
     {
         // @codeCoverageIgnoreStart
         // I am simply stumped on how to seriously test this
