@@ -28,18 +28,35 @@ class Mp3Indexer_AudioFileRecursiveFilterIterator extends RecursiveFilterIterato
     );
 
     /**
-     * only allow folders and accepted files
+     * allow folders and check files
      *
      * @return Boolean
      */
     public function accept()
     {
-         return $this->hasChildren() || in_array(
-             strtolower($this->current()->getExtension()),
-             self::$FILTERS,
-             true
-         );
+        if ($this->hasChildren()) {
+            return true;
+        }
+        return $this->_hasFileMatch();
     }
-
+    
+    /**
+     * only allow accepted files 
+     *
+     * @return Boolean
+     */
+    public function _hasFileMatch()
+    {
+        // @codeCoverageIgnoreStart
+        // I am simply stumped on how to seriously test this
+        // this horrible ->current() logic without resorting
+        // to awful stuff, meh
+        return in_array(
+            strtolower($this->current()->getExtension()),
+            self::$FILTERS,
+            true
+        );
+        // @codeCoverageIgnoreEnd
+    }
 }
 
