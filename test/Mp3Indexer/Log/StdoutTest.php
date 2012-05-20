@@ -40,7 +40,11 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->dispatcherMock = $this->getMock('sfEventDispatcher');
-        $this->eventMock = $this->getMock('sfEvent');
+
+        $this->eventMock = $this->getMockBuilder('sfEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->object = new Mp3Indexer_Log_Stdout(
             $this->dispatcherMock
         );
