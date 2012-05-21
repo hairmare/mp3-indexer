@@ -14,6 +14,9 @@
 
 require_once __DIR__.'/../..//src/Mp3Indexer/Store.php';
 
+require_once 'PHPUnit/Extensions/Database/ITester.php';
+require_once 'PHPUnit/Extensions/Database/AbstractTester.php';
+require_once 'PHPUnit/Extensions/Database/DefaultTester.php';
 require_once 'PHPUnit/Extensions/Database/TestCase.php';
 
 /**
