@@ -24,6 +24,13 @@
 class Mp3Indexer_Store
 {
     /**
+     * cache for prepared statements
+     *
+     * @var Array
+     */
+    private $_stmts = array();
+
+    /**
      * create store and register events
      *
      * @param sfEventDispatcher $dispatcher main event dispatcher
@@ -54,17 +61,29 @@ class Mp3Indexer_Store
             $this->_stmts = $this->_prepareStatements();
         }
         $stmts = $this->_stmts;
-        $file = $event['file'];
-        $data = $event['data'];
+        $file = $event->file;
+        $data = $event->data;
+        $path = dirname($file);
+        $name = basename($file);
 
         $this->_pdo->beginTransaction();
 
         try {
             // create new file entry
-            $path = dirname($file);
+            if (empty($path)) {
+                throw new RuntimeException("empty path detected");
+            }
             $stmts['file.insert']->bindParam('path', $path);
-            $name = basename($file);
+
+            if (empty($name)) {
+                throw new RuntimeException("empty name detected");
+            }
             $stmts['file.insert']->bindParam('name', $name);
+
+            if (empty($data)) {
+                throw new RuntimeException("no data in event");
+            }
+
             $stmts['file.insert']->execute();
 
             $lastInsertId = $this->_pdo->lastInsertId();
