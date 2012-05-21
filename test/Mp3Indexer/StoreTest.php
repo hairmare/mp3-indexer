@@ -149,7 +149,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateOrUpdate()
     {
-        $dataSet = $this->getDataset();
+        $this->getDataset();
 
         $this->textFrameMock
             ->expects($this->exactly(2))
