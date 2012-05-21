@@ -17,4 +17,10 @@
     <log type="coverage-clover" target="build/clover.xml"/>
     <log type="coverage-html" target="build/coverage"/>
   </logging>
+  <php>
+    <var name="DB_DSN" value="mysql:dbname=mp3-indexer;host=localhost" />
+    <var name="DB_USER" value="root" />
+    <var name="DB_PASSWD" value="" />
+    <var name="DB_DBNAME" value="mp3-indexer" />
+  </php>
 </phpunit>
