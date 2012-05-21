@@ -12,8 +12,22 @@
  * @link      http://github.com/purplehazech/mp3-indexer
  */
 
-require_once __DIR__.'/../..//src/Mp3Indexer/Store.php';
+require_once __DIR__.'/../../src/Mp3Indexer/Store.php';
 
+require_once 'PHPUnit/Extensions/Database/Operation/IDatabaseOperation.php';
+require_once 'PHPUnit/Extensions/Database/Operation/Factory.php';
+require_once 'PHPUnit/Extensions/Database/Operation/Null.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/IDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/AbstractDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/QueryDataSet.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/ITable.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/AbstractTable.php';
+require_once 'PHPUnit/Extensions/Database/DataSet/QueryTable.php';
+require_once 'PHPUnit/Extensions/Database/DB/IMetaData.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData.php';
+require_once 'PHPUnit/Extensions/Database/DB/MetaData/MySQL.php';
+require_once 'PHPUnit/Extensions/Database/DB/IDatabaseConnection.php';
+require_once 'PHPUnit/Extensions/Database/DB/DefaultDatabaseConnection.php';
 require_once 'PHPUnit/Extensions/Database/ITester.php';
 require_once 'PHPUnit/Extensions/Database/AbstractTester.php';
 require_once 'PHPUnit/Extensions/Database/DefaultTester.php';
