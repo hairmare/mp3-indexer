@@ -143,8 +143,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Extensions_Database_TestCase
      *
      * @covers Mp3Indexer_Store
      *
-     * @todo Implement testCreateOrUpdate().
-     *
      * @return void
      */
     public function testCreateOrUpdate()
