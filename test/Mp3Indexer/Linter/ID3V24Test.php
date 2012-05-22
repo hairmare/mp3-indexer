@@ -44,6 +44,12 @@ class Mp3Indexer_Linter_ID3V24Test extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->eventMock = $this
+            ->getMockBuilder('sfEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+
         $this->object = new Mp3Indexer_Linter_ID3V24(
             $this->dispatcherMock
         );
@@ -78,9 +84,11 @@ class Mp3Indexer_Linter_ID3V24Test extends PHPUnit_Framework_TestCase
      */
     public function testLint()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertFalse(
+            $this->object->lint(
+                $this->eventMock,
+                new SplFileInfo('/tmp')
+            )
         );
     }
 }
