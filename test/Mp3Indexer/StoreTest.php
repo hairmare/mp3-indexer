@@ -176,7 +176,10 @@ class Mp3Indexer_StoreTest extends PHPUnit_Extensions_Database_TestCase
             )
         );
 
-        $this->assertEquals(1, $this->getConnection()->getRowCount('audioFile'));
+        $rowCount = $this
+            ->getConnection()
+            ->getRowCount('audioFile');
+        $this->assertEquals(1, $rowCount);
     }
 
     /**
