@@ -66,7 +66,7 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     /**
      * test constructor
      *
-     * @covers Mp3Indexer_Reader::_construct
+     * @covers Mp3Indexer_Reader::__construct
      *
      * @return void
      */
