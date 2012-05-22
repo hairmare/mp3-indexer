@@ -76,8 +76,6 @@ class Mp3Indexer_Linter_ID3V24Test extends PHPUnit_Framework_TestCase
     /**
      * needs refactoring b4 testing
      * 
-     * @todo Implement testLint().
-     *
      * @covers Mp3Indexer_Linter_ID3V24::lint
      *
      * @return void
