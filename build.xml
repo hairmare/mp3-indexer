@@ -15,7 +15,7 @@
 
     <!--
     -->
-    <target name="test" requires="build">
+    <target name="test" depends="build">
         <exec executable="phpcs">
             <arg value="-s"/> <!-- Show sniff codes in all reports -->
             <arg value="--standard=PEAR"/>
@@ -49,7 +49,7 @@
 
     <!--
     -->
-    <target name="docs" requires="test">
+    <target name="docs" depends="test">
     </target>
 
     <!--
@@ -63,7 +63,7 @@
          This is used for building further packages that get deployed
          everywhere else
     -->
-    <target name="deploy-web" requires="pkg">
+    <target name="deploy-web" depends="pkg">
         <exec executable="cat" outputproperty="version">
             <arg value="VERSION"/>
         </exec>
@@ -73,7 +73,7 @@
         </exec>
     </target>
 
-    <target name="pkg" requires="docs">
+    <target name="pkg" depends="docs">
         <exec executable="cat" outputproperty="version">
             <arg value="VERSION"/>
         </exec>
