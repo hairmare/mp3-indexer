@@ -37,7 +37,9 @@ class Mp3Indexer_AudioFileRecursiveFilterIterator extends RecursiveFilterIterato
         if ($this->hasChildren()) {
             return true;
         }
+        // @codeCoverageIgnoreStart
         return $this->_hasFileMatch();
+        // @codeCoverageIgnoreEnd
     }
     
     /**
