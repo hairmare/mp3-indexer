@@ -88,6 +88,14 @@ class Mp3Indexer_Linter_ID3V24Test extends PHPUnit_Framework_TestCase
                 new SplFileInfo('/tmp')
             )
         );
+
+        $testFile = new SplFileInfo(__DIR__.'/../../fixtures/audioFiles/test.mp3');
+        $this->assertSame(
+            $testFile,
+            $this->object->lint(
+                $this->eventMock,
+                $testFile
+            )
+        );
     }
 }
-?>
