@@ -74,10 +74,6 @@ class Mp3Indexer_Store
                 throw new RuntimeException("empty path detected");
             }
             $stmts['file.insert']->bindParam('path', $path);
-
-            if (empty($name)) {
-                throw new RuntimeException("empty name detected");
-            }
             $stmts['file.insert']->bindParam('name', $name);
 
             if (empty($data)) {
