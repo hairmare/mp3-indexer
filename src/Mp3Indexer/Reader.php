@@ -59,8 +59,7 @@ class Mp3Indexer_Reader
     public function read(sfEvent $event)
     {
         $logError = false;
-        $file = $event['file'];
-        echo $file;
+        $file = $event->file;
 
         // lint them files
         $event = clone $this->_linter;
