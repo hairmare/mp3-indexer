@@ -35,19 +35,44 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
      *
-     * @returns void
+     * @return void
      */
     protected function setUp()
     {
-        $this->dispatcherMock = $this->getMockBuilder('sfEventDispatcher')->getMock();
+        $this->dispatcherMock = $this
+            ->getMockBuilder('sfEventDispatcher')
+            ->getMock();
 
-        $eventBuilder = $this->eventBuilder = $this->getMockBuilder('sfEvent')->disableOriginalConstructor();
+        $eventBuilder = $this->eventBuilder = $this
+            ->getMockBuilder('sfEvent')
+            ->disableOriginalConstructor();
+
         $this->linterMock = $eventBuilder->getMock();
         $this->dataMock = $eventBuilder->getMock();
         $this->logMock = $eventBuilder->getMock();
-        $this->readerFactoryMock = $this->getMockBuilder('Mp3Indexer_ReaderImplFactory')->getMock();
+        $this->readerFactoryMock = $this
+            ->getMockBuilder('Mp3Indexer_ReaderImplFactory')
+            ->getMock();
                                  
         $this->object = new Mp3Indexer_Reader(
+            $this->dispatcherMock,
+            $this->linterMock,
+            $this->dataMock,
+            $this->logMock,
+            $this->readerFactoryMock
+        );
+    }
+
+    /**
+     * test constructor
+     *
+     * @covers Mp3Indexer_Reader::_construct
+     *
+     * @return void
+     */
+    public function testConstructor()
+    {
+        new Mp3Indexer_Reader(
             $this->dispatcherMock,
             $this->linterMock,
             $this->dataMock,
@@ -76,13 +101,13 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
                 '/tmp/hello/world'
             );
 
-		$readerMock = $this->getMock('stdClass');
+        $readerMock = $this->getMock('stdClass');
 
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
             ->with('/tmp/hello/world')
-			->will($this->returnValue($readerMock));
+            ->will($this->returnValue($readerMock));
 
 
         $this->object->read($event);
