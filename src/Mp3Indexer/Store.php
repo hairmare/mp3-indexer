@@ -13,7 +13,7 @@
  */
 
 /**
- * store data somehow
+ * store data in semantic mediawiki
  *
  * @category Store
  * @package  Mp3Indexer
@@ -23,29 +23,28 @@
  */
 class Mp3Indexer_Store
 {
-    /**
-     * cache for prepared statements
-     *
-     * @var Array
-     */
-    private $_stmts = array();
-
+	var $_mwForm = 'AudioTrack';
+    var $_templateMap = array(
+      'TALB' => 'AudioTrack[IsTrackOf]',
+      'TIT2' => 'AudioTrack[TrackName]',
+      'TPE1' => 'AudioTrack[HasCreator]'
+    );
     /**
      * create store and register events
      *
-     * @param sfEventDispatcher $dispatcher main event dispatcher
-     * @param PDO               $pdo        database connection
-     * @param sfEvent           $logEvent   logger event
+     * @param sfEventDispatcher      $dispatcher main event dispatcher
+     * @param sfEvent                $logEvent   logger event
+     * @param Mp3Indexer_MwApiClient $apiClient  api client to mediawiki
      */
     public function __construct(
         sfEventDispatcher $dispatcher,
-        PDO $pdo,
-        sfEvent $logEvent
+        sfEvent $logEvent,
+    	Mp3Indexer_MwApiClient $apiClient
     ) {
         $this->_dispatcher = $dispatcher;
         $this->_dispatcher->connect('mp3scan.data', array($this, 'createOrUpdate'));
-        $this->_pdo = $pdo;
         $this->_logEvent = $logEvent;
+        $this->_apiClient = $apiClient;
     }
 
     /**
@@ -57,38 +56,58 @@ class Mp3Indexer_Store
      */
     public function createOrUpdate(sfEvent $event)
     {
-        if (!$this->_stmts) {
-            $this->_stmts = $this->_prepareStatements();
-        }
-        $stmts = $this->_stmts;
-        $file = $event->file;
-        $data = $event->data;
+        $file = $event['file'];
+        $data = $event['data'];
         $path = dirname($file);
         $name = basename($file);
-
-        $this->_pdo->beginTransaction();
 
         try {
             // create new file entry
             if (empty($path)) {
                 throw new RuntimeException("empty path detected");
             }
-            $stmts['file.insert']->bindParam('path', $path);
-            $stmts['file.insert']->bindParam('name', $name);
-
             if (empty($data)) {
                 throw new RuntimeException("no data in event");
             }
-
-            $stmts['file.insert']->execute();
-
-            $lastInsertId = $this->_pdo->lastInsertId();
+            $tags = array();
 
             foreach ($data AS $value) {
-                $this->_insertTags($value, $lastInsertId);
+                $name = $value->getIdentifier();
+                $tags[$name] = $this->_getSimpleValue($value);
             }
+            $artist = trim($tags['TPE1'][0]);
+            $album = trim($tags['TALB'][0]);
+            $track = trim($tags['TIT2'][0]);
+            
+			if ($album) {
+                $target = $track.' von '.$artist.' auf '.$album.' (Track)';
+            } else {
+                $target = $track.' von '.$artist.' (Track)';
+            }
+
+            $query = array('AudioTrack[Locator]=file:///' => $file);
+            $replace = array(
+            	'[' => '(',
+            	']' => ')',
+            	'#' => '',
+            	'<' => '(',
+            	'>' => ')',
+            	'|' => '-',
+            	'{' => '(',
+            	'}' => ')'
+            );
+            foreach ($tags AS $name => $data) {
+                if (!empty($this->_templateMap[$name])) {
+                    $query[$this->_templateMap[$name].'='] = strtr(trim($data[0]), $replace);
+                }
+            }
+            $query['AudioTrack[IsTrackOf]'] = $album.' von '.$artist. ' (Album)';
+            $target = strtr($target, $replace);
+            
+            //echo PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.$target.PHP_EOL;
+            $this->_apiClient->sfautoedit($this->_mwForm, $target, $query);
+            echo '.';
         } catch (Exception $e) {
-            $this->_pdo->rollback();
             // trigger error log event
             $event = clone $this->_logEvent;
             $event->type = 'error';
@@ -96,57 +115,18 @@ class Mp3Indexer_Store
             $this->_dispatcher->notify($event);
             return false;
         }
-        $this->_pdo->commit();
         return true;
-    }
-
-    /**
-     * prepare all the relevant statements
-     *
-     * @return void
-     */
-    private function _prepareStatements()
-    {
-        $stmts = array();
-        $stmts['file.insert'] = $this->_pdo->prepare(
-            '
-                REPLACE INTO audioFile
-                SET
-                    path = :path,
-                    name = :name;
-            '
-        );
-        $stmts['id3.insert'] = $this->_pdo->prepare(
-            '
-                REPLACE INTO id3Record
-                SET
-                    audioFile_id = :audioFile_id,
-                    tag = :tag,
-                    value = :value;
-            '
-        );
-        return $stmts;
     }
 
     /**
      * convert and insert found tags
      *
      * @param Object  $value  a Zend_Media_* instance
-     * @param Integer $fileId id of corresponding file record
      *
      * @return void
      */
-    private function _insertTags($value, $fileId)
+    private function _getSimpleValue($value)
     {
-        $stmts = $this->_stmts;
-        $tagName = $value->getIdentifier();
-
-        /* delegate datampping 
-        $event = clone $this->_filterEvent;
-        $this->_dispatcher->filter($event, $value);
-        $value = $event->getReturnValue();
-        */
-
         if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
             $tagValues = $value->getTexts();
         } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
@@ -170,14 +150,6 @@ class Mp3Indexer_Store
         } else {
             $tagValues = array(var_export($value, true));
         }
-        foreach ($tagValues AS $text) {
-            $stmts['id3.insert']->bindParam(
-                'audioFile_id',
-                $fileId
-            );
-            $stmts['id3.insert']->bindParam('tag', $tagName);
-            $stmts['id3.insert']->bindParam('value', $text);
-            $stmts['id3.insert']->execute();
-        }
+        return $tagValues;
     }
 }
