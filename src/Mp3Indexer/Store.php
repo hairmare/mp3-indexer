@@ -86,19 +86,9 @@ class Mp3Indexer_Store
             }
 
             $query = array('AudioTrack[Locator]=file:///' => $file);
-            $replace = array(
-            	'[' => '(',
-            	']' => ')',
-            	'#' => '',
-            	'<' => '(',
-            	'>' => ')',
-            	'|' => '-',
-            	'{' => '(',
-            	'}' => ')'
-            );
             foreach ($tags AS $name => $data) {
                 if (!empty($this->_templateMap[$name])) {
-                    $query[$this->_templateMap[$name].'='] = strtr(trim($data[0]), $replace);
+                    $query[$this->_templateMap[$name].'='] = trim($data[0]);
                 }
             }
             $query['AudioTrack[IsTrackOf]'] = $album.' von '.$artist. ' (Album)';

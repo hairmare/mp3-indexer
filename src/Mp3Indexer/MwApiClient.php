@@ -23,6 +23,16 @@
  */
 class Mp3Indexer_MwApiClient
 {
+	protected $_sanitationMap = array(
+          '[' => '(',
+          ']' => ')',
+          '#' => '',
+          '<' => '(',
+          '>' => ')',
+          '|' => '-',
+          '{' => '(',
+          '}' => ')'
+	);
 	private $_header = array();
 	/**
 	 * create new api instance
@@ -75,6 +85,7 @@ class Mp3Indexer_MwApiClient
 	
 	public function sfautoedit($form, $target, $query)
 	{
+		$target = $this->_sanitizeTitle($target);
 		return $this->_callApi(
 		    'sfautoedit',
 			array_merge(
@@ -114,5 +125,19 @@ class Mp3Indexer_MwApiClient
 		    var_dump($return); die;
 		}
 		return simplexml_load_string($return);
+	}
+	
+	/**
+	 * clean up a title according to mediawiki limitiations.
+	 * 
+	 * does some creative replacing for some variables
+	 *
+	 * @param String $title
+	 * 
+	 * @return String
+	 */
+	protected function _sanitizeTitle($title) 
+	{
+		return strtr($title, $this->_sanitationMap);
 	}
 }
