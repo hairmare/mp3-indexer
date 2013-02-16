@@ -14,7 +14,7 @@
 
 ini_set(
     'include_path',
-    dirname(__FILE__).'/../lib/php-reader/src/:'.ini_get('include_path')
+    dirname(__FILE__).'/../lib/php-reader/library/:'.ini_get('include_path')
 );
 
 require_once 'Zend/Media/Id3v2.php';
@@ -26,6 +26,7 @@ require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php
 require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
+require_once dirname(__FILE__).'/Mp3Indexer/MwApiClient.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
 require_once dirname(__FILE__).'/Mp3Indexer/ReaderImplFactory.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
@@ -37,11 +38,12 @@ sfServiceContainerAutoloader::register();
 // setup dependency injection
 $sc = new sfServiceContainerBuilder(
     array(
-        'mp3root' => $_SERVER['HOME'],
+        'mp3root' => $_SERVER['HOME'].'/Music',
+    	'mw.apiurl'=> '',
+    	'mw.username' => '',
+    	'mw.password' => '',
+    	'mw.domain' => NULL,
         'eyeD3.bin' => 'eyeD3',
-        'db.dsn' => 'mysql:host=localhost;port=3306;dbname=test',
-        'db.user' => 'test',
-        'db.pass' => null
     )
 );
 
@@ -74,21 +76,16 @@ $sc->register('logevent', 'sfEvent')
     ->addArgument(new stdClass)
     ->addArgument('log');
 
-// need for db config
-$sc->register('pdoconn', 'PDO')
-    ->addArgument('%db.dsn%')
-    ->addArgument('%db.user%')
-    ->addArgument('%db.pass%')
-    ->addMethodCall(
-        'setAttribute',
-        array(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        )
-    );
-
 // wrapper for reading mps data
 $sc->register('readerimplfactory', 'Mp3Indexer_ReaderImplFactory');
+
+// access to mediawiki
+$sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
+    ->addArgument('%mw.apiurl%')
+    ->addMethodCall(
+        'login',
+    	array('%mw.username%', '%mw.password%', '%mw.domain%')
+    );
 
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
@@ -103,8 +100,8 @@ $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('readerimplfactory'));
 $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addArgument(new sfServiceReference('dispatcher'))
-    ->addArgument(new sfServiceReference('pdoconn'))
-    ->addArgument(new sfServiceReference('logevent'));
+    ->addArgument(new sfServiceReference('logevent'))
+    ->addArgument(new sfServiceReference('mwapiclient'));
 
 // linting
 $sc->register('mp3lint.id3v34', 'Mp3Indexer_Linter_ID3V24')
@@ -119,7 +116,7 @@ $sc->register('mp3indexer', 'Mp3Indexer')
     ->addArgument(new sfServiceReference('mp3scanner'))
     ->addArgument(new sfServiceReference('mp3reader'))
     ->addArgument(new sfServiceReference('mp3store'))
-    ->addArgument(array(new sfServiceReference('mp3lint.id3v34')))
+    ->addArgument(array())
     ->addMethodCall(
         'addLogger',
         array(new sfServiceReference('logstdout'))
