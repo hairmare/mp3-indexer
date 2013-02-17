@@ -23,12 +23,6 @@
  */
 class Mp3Indexer_Store
 {
-	var $_mwForm = 'AudioTrack';
-    var $_templateMap = array(
-      'TALB' => 'AudioTrack[IsTrackOf]',
-      'TIT2' => 'AudioTrack[TrackName]',
-      'TPE1' => 'AudioTrack[HasCreator]'
-    );
     /**
      * create store and register events
      *
@@ -46,9 +40,18 @@ class Mp3Indexer_Store
         $this->_logEvent = $logEvent;
         $this->_apiClient = $apiClient;
     }
+    
+    /**
+     * Add an output mapper to maps.
+     * 
+     * @param Mp3Indexer_Map_SemanticMediawiki $map
+     */
+    public function addMap(Mp3Indexer_Map_SemanticMediawiki $map) {
+    	$this->_maps[] = $map;
+    }
 
     /**
-     * make sure data is in database
+     * make sure data is in database by using all mappers
      *
      * @param sfEvent $event triggering data laden event
      *
@@ -58,6 +61,7 @@ class Mp3Indexer_Store
     {
         $file = $event['file'];
         $data = $event['data'];
+        $data['file'] = $file;
         $path = dirname($file);
         $name = basename($file);
 
@@ -69,34 +73,12 @@ class Mp3Indexer_Store
             if (empty($data)) {
                 throw new RuntimeException("no data in event");
             }
-            $tags = array();
-
-            foreach ($data AS $value) {
-                $name = $value->getIdentifier();
-                $tags[$name] = $this->_getSimpleValue($value);
-            }
-            $artist = trim($tags['TPE1'][0]);
-            $album = trim($tags['TALB'][0]);
-            $track = trim($tags['TIT2'][0]);
             
-			if ($album) {
-                $target = $track.' von '.$artist.' auf '.$album.' (Track)';
-            } else {
-                $target = $track.' von '.$artist.' (Track)';
+            foreach ($this->_maps AS $map) {
+            	$map->setData($data);
+            	
+            	$this->_apiClient->sfautoedit($map::MW_FORM, $map->getTarget(), $map->getQuery());
             }
-
-            $query = array('AudioTrack[Locator]=file:///' => $file);
-            foreach ($tags AS $name => $data) {
-                if (!empty($this->_templateMap[$name])) {
-                    $query[$this->_templateMap[$name].'='] = trim($data[0]);
-                }
-            }
-            $query['AudioTrack[IsTrackOf]'] = $album.' von '.$artist. ' (Album)';
-            $target = strtr($target, $replace);
-            
-            //echo PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.PHP_EOL.$target.PHP_EOL;
-            $this->_apiClient->sfautoedit($this->_mwForm, $target, $query);
-            echo '.';
         } catch (Exception $e) {
             // trigger error log event
             $event = clone $this->_logEvent;
@@ -108,38 +90,4 @@ class Mp3Indexer_Store
         return true;
     }
 
-    /**
-     * convert and insert found tags
-     *
-     * @param Object  $value  a Zend_Media_* instance
-     *
-     * @return void
-     */
-    private function _getSimpleValue($value)
-    {
-        if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
-            $tagValues = $value->getTexts();
-        } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
-            $tagValues = array($value->getLink());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
-            // @todo implement serious loading
-            $tagValues = array($value->getOwner());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
-            // @todo implement picture loading
-            $tagValues = array($value->getImageType());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
-            // @todo implement serious loading
-            $tagValues = array(
-                $value->getDescription().' : '.$value->getText()
-            );
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
-            // @todo do we need all these
-            $tagValues = array(
-                $value->getOwner().' : '.$value->getData()
-            );
-        } else {
-            $tagValues = array(var_export($value, true));
-        }
-        return $tagValues;
-    }
 }

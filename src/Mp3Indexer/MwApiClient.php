@@ -66,11 +66,10 @@ class Mp3Indexer_MwApiClient
 			$args
 		);
 		
-		
 		$cookie = $login->login['cookieprefix'].'_session='.$login->login['sessionid'];
-		$this->_header = array('Cookie: '.$cookie);
-		
+
 		$args['lgtoken'] = $login->login['token'];
+		$this->_header = array('Cookie: '.$cookie);
 		$confirm = $this->_callApi(
 		    'login',
 			$args
@@ -122,7 +121,7 @@ class Mp3Indexer_MwApiClient
 		
 		if (!is_string($return)) {
 			// @todo build error handling
-		    var_dump($return); die;
+		    var_dump('ret',$return); die;
 		}
 		return simplexml_load_string($return);
 	}

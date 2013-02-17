@@ -27,6 +27,8 @@ require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
 require_once dirname(__FILE__).'/Mp3Indexer/MwApiClient.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Map/SemanticMediawiki.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Map/AudioTrack.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
 require_once dirname(__FILE__).'/Mp3Indexer/ReaderImplFactory.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
@@ -87,6 +89,9 @@ $sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
     	array('%mw.username%', '%mw.password%', '%mw.domain%')
     );
 
+// mappers for mediawiki pages
+$sc->register('mapaudiotrack', 'Mp3Indexer_Map_AudioTrack');
+
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
     ->addArgument(new sfServiceReference('audiofilteriterator'))
@@ -101,7 +106,11 @@ $sc->register('mp3reader', 'Mp3Indexer_Reader')
 $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('logevent'))
-    ->addArgument(new sfServiceReference('mwapiclient'));
+    ->addArgument(new sfServiceReference('mwapiclient'))
+    ->addMethodCall(
+        'addMap',
+    	array(new sfServiceReference('mapaudiotrack'))
+    );
 
 // linting
 $sc->register('mp3lint.id3v34', 'Mp3Indexer_Linter_ID3V24')
