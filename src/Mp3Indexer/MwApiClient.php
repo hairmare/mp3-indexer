@@ -41,12 +41,12 @@ class Mp3Indexer_MwApiClient
      * 
      * @param String $apiurl url to mediawikis api.php endpoint
      */
-    public function __construct($apiurl)
+    public function __construct($apiurl, Mp3Indexer_Curl $curl)
     {
         $this->_apiurl = $apiurl;
-        $this->_curl = curl_init();
-        curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->_curl, CURLOPT_HEADER, 0);
+        $this->_curl = $curl;
+        $this->_curl->setopt(CURLOPT_RETURNTRANSFER, 1);
+        $this->_curl->setopt(CURLOPT_HEADER, 0);
     }
     
     /**
@@ -136,16 +136,16 @@ class Mp3Indexer_MwApiClient
     {
         $url = $this->_apiurl.'?action='.$action.'&format='.$format;
         if ($post) {
-             curl_setopt($this->_curl, CURLOPT_POST, $post);
-             curl_setopt($this->_curl, CURLOPT_POSTFIELDS, $params);
+             $this->_curl->setopt(CURLOPT_POST, $post);
+             $this->_curl->setopt(CURLOPT_POSTFIELDS, $params);
         } else {
             foreach ($params AS $name => $value) {
                 $url .= '&'.$name.'='.$value;
             }
         }
-        curl_setopt($this->_curl, CURLOPT_HTTPHEADER, $this->_header);
-        curl_setopt($this->_curl, CURLOPT_URL, $url);
-        $return = curl_exec($this->_curl);
+        $this->_curl->setopt(CURLOPT_HTTPHEADER, $this->_header);
+        $this->_curl->setopt(CURLOPT_URL, $url);
+        $return = $this->_curl->exec();
         
         if (!is_string($return)) {
             // @todo build error handling

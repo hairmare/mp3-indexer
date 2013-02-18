@@ -29,6 +29,7 @@ require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
 require_once dirname(__FILE__).'/Mp3Indexer/MwApiClient.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Map/SemanticMediawiki.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Map/AudioTrack.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Curl.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
 require_once dirname(__FILE__).'/Mp3Indexer/ReaderImplFactory.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
@@ -58,6 +59,9 @@ if (file_exists(dirname(__FILE__).'/../localConf.php')) {
 
 $sc->register('dispatcher', 'sfEventDispatcher');
 
+// oo interface to curl
+$sc->register('curl', 'Mp3Indexer_Curl');
+
 // creating iterators to find audio files
 $sc->register('musiciterator', 'RecursiveDirectoryIterator')
     ->addArgument('%mp3root%');
@@ -84,6 +88,7 @@ $sc->register('readerimplfactory', 'Mp3Indexer_ReaderImplFactory');
 // access to mediawiki
 $sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
     ->addArgument('%mw.apiurl%')
+    ->addArgument(new sfServiceReference('curl'))
     ->addMethodCall(
         'login',
         array('%mw.username%', '%mw.password%', '%mw.domain%')
