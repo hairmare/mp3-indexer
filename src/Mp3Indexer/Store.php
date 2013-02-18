@@ -64,7 +64,6 @@ class Mp3Indexer_Store
     {
         $file = $event->file;
         $data = $event->data;
-        $data['file'] = $file;
         $path = dirname($file);
 
         try {
@@ -75,7 +74,8 @@ class Mp3Indexer_Store
             if (empty($data)) {
                 throw new RuntimeException("no data in event");
             }
-            
+
+            $data['file'] = $file;
             foreach ($this->_maps AS $map) {
                 $map->setData($data);
                 $target = $map->getTarget();
