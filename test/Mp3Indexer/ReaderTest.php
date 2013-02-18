@@ -183,13 +183,12 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             ->with('/tmp/hello/world')
             ->will($this->returnValue($this));
 
-        $this->getReturnValueThrows = new RuntimeException();
+        $this->getReturnValueThrows = new Exception();
         $this->linterMock
             ->expects($this->once())
             ->method('getReturnValue')
             ->will($this->returnValue(true));
         
-        $this->setExpectedException('RuntimeException');
         $this->object->read($event);
     }
 }
