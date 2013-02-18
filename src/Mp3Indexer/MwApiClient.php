@@ -140,7 +140,7 @@ class Mp3Indexer_MwApiClient
         if (!is_string($return)) {
             // @todo build error handling
             var_dump('ret', $return);
-            throw new Exception('le fail')
+            throw new Exception('le fail');
         }
         return simplexml_load_string($return);
     }
