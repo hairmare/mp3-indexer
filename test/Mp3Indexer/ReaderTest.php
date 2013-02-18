@@ -30,6 +30,19 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
      * @var Mp3Indexer_Reader
      */
     protected $object;
+    
+    /**
+     * shunt method for testRead*
+     *
+     * @return Booelan
+     */
+    public function getFramesByIdentifier()
+    {
+        if (isset($this->getReturnValueThrows)) {
+            throw $this->getReturnValueThrows;
+        }
+        return array();
+    }
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -116,12 +129,66 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     }
     
     /**
-     * shunt method for testRead
-     * 
-     * @return Booelan
+     * test read method, error case
+     *
+     * @covers Mp3Indexer_Reader::read
+     *
+     * @return void
      */
-    public function getFramesByIdentifier()
+    public function testReadError()
     {
-        return array();
+        $event = $this->eventBuilder->getMock();
+        $event->file = '/tmp/hello/world';
+    
+        $this->dispatcherMock
+            ->expects($this->once())
+            ->method('filter')
+            ->with(
+                $this->linterMock,
+                '/tmp/hello/world'
+            );
+    
+        $this->readerFactoryMock
+            ->staticExpects($this->once())
+            ->method('getReader')
+            ->with('/tmp/hello/world')
+            ->will($this->returnValue($this));
+    
+        $this->object->read($event);
+    }
+    
+    /**
+     * test read method, exception case
+     *
+     * @covers Mp3Indexer_Reader::read
+     *
+     * @return void
+     */
+    public function testReadError()
+    {
+        $event = $this->eventBuilder->getMock();
+        $event->file = '/tmp/hello/world';
+    
+        $this->dispatcherMock
+            ->expects($this->once())
+            ->method('filter')
+            ->with(
+                $this->linterMock,
+                '/tmp/hello/world'
+            );
+    
+        $this->readerFactoryMock
+            ->staticExpects($this->once())
+            ->method('getReader')
+            ->with('/tmp/hello/world')
+            ->will($this->returnValue($this));
+
+        $this->getReturnValueThrows = new Exception();
+        $this->linterMock
+            ->expects($this->once())
+            ->method('getReturnValue')
+            ->will($this->returnValue(true));
+    
+        $this->object->read($event);
     }
 }
