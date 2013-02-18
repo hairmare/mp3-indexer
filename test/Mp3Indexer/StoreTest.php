@@ -61,6 +61,15 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
+        $this->audioTrackMapMock = $this
+            ->getMockBuilder('Mp3Indexer_Map_AudioTrack')
+            ->setMethods(
+                array(
+                    'setData',
+                    'getTarget',
+                    'setQuery'
+                )
+            );
 
         $this->object = new Mp3Indexer_Store(
             $this->dispatcherMock,
@@ -88,10 +97,12 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('Hello World!')));
 
         $event = clone $this->eventMock;
-        $event->file = 'testbase/testfile';
-        $event->data = array(
+        $event['file'] = 'testbase/testfile';
+        $event['data'] = array(
             $this->textFrameMock
         );
+
+        $this->object->addMap($this->audioTrackMapMock);
 
         $this->assertTrue(
             $this->object->createOrUpdate(
@@ -115,7 +126,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
      * test public method and private dependants
      *
      * @covers Mp3Indexer_Store::createOrUpdate
-     * @covers Mp3Indexer_Store::_prepareStatements
      *
      * @todo Implement testCreateOrUpdate().
      *
@@ -124,13 +134,13 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
     public function testCreateOrUpdateException()
     {
         $event = clone $this->eventMock;
-        $event->data = array();
+        $event['data'] = array();
 
         $this->dispatcherMock
             ->expects($this->exactly(2))
             ->method('notify');
 
-        $event->file = null;
+        $event['file'] = null;
         $this->assertFalse(
             $this->object->createOrUpdate(
                 $event
@@ -138,7 +148,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             "no file given"
         );
 
-        $event->file = 'base/file';
+        $event['file'] = 'base/file';
         $this->assertFalse(
             $this->object->createOrUpdate(
                 $event
