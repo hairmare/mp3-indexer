@@ -44,7 +44,7 @@ $sc = new sfServiceContainerBuilder(
         'mw.apiurl'=> '',
         'mw.username' => '',
         'mw.password' => '',
-        'mw.domain' => NULL,
+        'mw.domain' => null,
         'eyeD3.bin' => 'eyeD3',
     )
 );

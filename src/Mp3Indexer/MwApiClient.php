@@ -23,7 +23,7 @@
  */
 class Mp3Indexer_MwApiClient
 {
-    protected $_sanitationMap = array(
+    private $_sanitationMap = array(
           '[' => '(',
           ']' => ')',
           '#' => '',
@@ -33,7 +33,9 @@ class Mp3Indexer_MwApiClient
           '{' => '(',
           '}' => ')'
     );
+    
     private $_header = array();
+    
     /**
      * create new api instance
      * 
@@ -50,9 +52,11 @@ class Mp3Indexer_MwApiClient
     /**
      * login to mediawikis api
      * 
-     * @param String $username
-     * @param String $password
-     * @param String $domain
+     * @param String $username mediawiki bot username
+     * @param String $password mediawiki bot password
+     * @param String $domain   mediawiki bot domain (ie for ldap logins)
+     * 
+     * @return void
      */
     public function login($username, $password, $domain = NULL)
     {
@@ -82,6 +86,15 @@ class Mp3Indexer_MwApiClient
         $this->_header = array('Cookie: '.$cookie.'; '.$username.'; '.$userid.'; '.$token);
     }
     
+    /**
+     * call the sfautoedit action from semantic mediawiki
+     * 
+     * @param String $form   smw form to use
+     * @param String $target target page in wiki
+     * @param Array  $query  array of query params as per docs
+     * 
+     * @return void
+     */
     public function sfautoedit($form, $target, $query)
     {
         $target = $this->_sanitizeTitle($target);
@@ -100,13 +113,18 @@ class Mp3Indexer_MwApiClient
     /**
      * actual calls to api
      * 
-     * @param String $action
-     * @param Array $params
-     * @param String $method
+     * Call the api using the given params. 
+     * 
+     * @param String $action mediawiki api action
+     * @param Array  $params mediawiki api params
+     * @param String $method POST or GET
+     * @param Array  $format mediawiki api format
+     * 
+     * @return SimpleXMLElement
      */
-    protected function _callApi($action, $params, $post = true)
+    private function _callApi($action, $params, $post = true, $format = 'xml')
     {
-        $url = $this->_apiurl.'?action='.$action.'&format=xml';
+        $url = $this->_apiurl.'?action='.$action.'&format='.$format;
         if ($post) {
              curl_setopt($this->_curl, CURLOPT_POST, $post);
              curl_setopt($this->_curl, CURLOPT_POSTFIELDS, $params);
@@ -121,7 +139,8 @@ class Mp3Indexer_MwApiClient
         
         if (!is_string($return)) {
             // @todo build error handling
-            var_dump('ret',$return); die;
+            var_dump('ret', $return);
+            throw new Exception('le fail')
         }
         return simplexml_load_string($return);
     }
@@ -131,11 +150,11 @@ class Mp3Indexer_MwApiClient
      * 
      * does some creative replacing for some variables
      *
-     * @param String $title
+     * @param String $title generated title that might contain insane chars
      * 
      * @return String
      */
-    protected function _sanitizeTitle($title) 
+    private function _sanitizeTitle($title) 
     {
         return strtr($title, $this->_sanitationMap);
     }

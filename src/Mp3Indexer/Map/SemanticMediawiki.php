@@ -62,14 +62,17 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * gets the first string from an id3 frame
      * 
-     * @param String $tagName
+     * @param String $frameName Id3 frame name
      * 
      * @return String|NULL
      */
-    protected function _getString($tagName)
+    private function _getString($frameName)
     {
         foreach ($this->_data AS $tag) {
-            if (is_callable(array($tag,'getIdentifier')) && $tag->getIdentifier() == $tagName) {
+            if (!is_callable(array($tag, 'getIdentifier'))) {
+                continue;
+            }
+            if ($tag->getIdentifier() == $frameName) {
                 return array_pop($this->_getSimpleValue($tag));
             }
         }
@@ -78,17 +81,24 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * generic query builder used by subclasses
      * 
-     * @param Array $map   map of query templates
+     * @todo rework to support file names through templating
+     * 
+     * @param Array  $map  map of query templates
      * @param String $form name of smw form to use
      * 
      * @return Array
      */
-    protected function _getQuery($map, $form = self::MW_FORM)
+    private function _getQuery($map, $form = self::MW_FORM)
     {
         $query = array($form.'[Locator]=' => (string) $this->_data['file']);
         foreach ($this->_data AS $tag) {
-            if (is_callable(array($tag,'getIdentifier')) && !empty($map[$tag->getIdentifier()])) {
-                $query[$map[$tag->getIdentifier()].'='] = $this->_getString($tag->getIdentifier());
+            if (!is_callable(array($tag, 'getIdentifier'))) {
+                continue;
+            }
+            $tagName = $tag->getIdentifier();
+            if (!empty($map[$tagName])
+            ) { 
+                $query[$map[$tagName].'='] = $this->_getString($tagName);
             }
         }
         return $query;
@@ -97,11 +107,11 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * convert and insert found tags
      *
-     * @param Object  $value  a Zend_Media_* instance
+     * @param Object $value a Zend_Media_* instance
      *
      * @return void
      */
-    protected function _getSimpleValue($value)
+    private function _getSimpleValue($value)
     {
         if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
             $tagValues = $value->getTexts();

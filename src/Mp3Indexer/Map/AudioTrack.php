@@ -23,31 +23,48 @@
  */
  class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
 {
-	const MW_FORM = 'AudioTrack';
-	
-	private $_templateMap = array(
-		self::ID3_ALBUM  => 'AudioTrack[IsTrackOf]',
-		self::ID3_TITLE  => 'AudioTrack[TrackName]',
-		self::ID3_ARTIST => 'AudioTrack[HasCreator]',
-		self::ID3_YEAR   => 'AudioTrack[RecordDate]'
-	);
-	
-	public function getTarget()
-	{
-		$track = $this->_getString(self::ID3_TITLE);
-		$artist = $this->_getString(self::ID3_ARTIST);
+    const MW_FORM = 'AudioTrack';
+    
+    private $_templateMap = array(
+        self::ID3_ALBUM  => 'AudioTrack[IsTrackOf]',
+        self::ID3_TITLE  => 'AudioTrack[TrackName]',
+        self::ID3_ARTIST => 'AudioTrack[HasCreator]',
+        self::ID3_YEAR   => 'AudioTrack[RecordDate]'
+    );
+    
+    /**
+     * return name based on data from request
+     * 
+     * @todo rewrite this so it uses a sensible chksum (ala shorturl)
+     * @todo add namespace support
+     * 
+     * @see Mp3Indexer_Map_SemanticMediawiki::getTarget()
+     * 
+     * @return String
+     */
+    public function getTarget()
+    {
+        $track = $this->_getString(self::ID3_TITLE);
+        $artist = $this->_getString(self::ID3_ARTIST);
         $album = $this->_getString(self::ID3_ALBUM);
-		if ($album) {
-			$target = $track.' von '.$artist.' auf '.$album.' (Track)';
-		} else {
-			$target = $track.' von '.$artist.' (Track)';
-		}
-		return $target;
-	}
-	
-	public function getQuery()
-	{
-		return $this->_getQuery($this->_templateMap, self::MW_FORM);
-	}
-	
+        if ($album) {
+            $target = $track.' von '.$artist.' auf '.$album.' (Track)';
+        } else {
+            $target = $track.' von '.$artist.' (Track)';
+        }
+        return $target;
+    }
+    
+    /**
+     * return query array
+     * 
+     * @see Mp3Indexer_Map_SemanticMediawiki::getQuery()
+     * 
+     * @return Array
+     */
+    public function getQuery()
+    {
+        return $this->_getQuery($this->_templateMap, self::MW_FORM);
+    }
+    
 }
