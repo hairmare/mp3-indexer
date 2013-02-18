@@ -188,7 +188,8 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('getReturnValue')
             ->will($this->returnValue(true));
-    
+        
+        $this->setExpectedException('Exception');
         $this->object->read($event);
     }
 }
