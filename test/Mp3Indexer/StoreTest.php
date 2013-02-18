@@ -52,15 +52,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder('Mp3Indexer_MwApiClient')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->textFrameMock = $this
-            ->getMockBuilder('Zend_Media_Id3_TextFrame')
-            ->setMethods(
-                array(
-                    'getIdentifier',
-                    'getTexts'
-                )
-            )
-            ->getMock();
         $this->audioTrackMapMock = $this
             ->getMockBuilder('Mp3Indexer_Map_AudioTrack')
             ->setMethods(
@@ -87,19 +78,22 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateOrUpdate()
     {
-        $this->textFrameMock
+        $this->audioTrackMapMock
+            ->expects($this->exactly(1))
+            ->method('setData');
+        $this->audioTrackMapMock
             ->expects($this->exactly(2))
-            ->method('getIdentifier')
+            ->method('getTarget')
             ->will($this->returnValue('TST'));
-        $this->textFrameMock
+        $this->audioTrackMapMock
             ->expects($this->exactly(2))
-            ->method('getTexts')
+            ->method('setQuery')
             ->will($this->returnValue(array('Hello World!')));
 
         $event = clone $this->eventMock;
         $event->file = 'testbase/testfile';
         $event->data = array(
-            $this->textFrameMock
+            new stdClass
         );
 
         $this->object->addMap(
