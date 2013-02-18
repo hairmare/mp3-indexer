@@ -62,8 +62,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             )
             ->getMock();
 
-        $this->getConnection();
-
         $this->object = new Mp3Indexer_Store(
             $this->dispatcherMock,
             $this->eventMock,
@@ -80,8 +78,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateOrUpdate()
     {
-        $this->getDataset();
-
         $this->textFrameMock
             ->expects($this->exactly(2))
             ->method('getIdentifier')
