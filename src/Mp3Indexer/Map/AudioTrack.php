@@ -25,7 +25,7 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
 {
     const MW_FORM = 'AudioTrack';
     
-    private $_templateMap = array(
+    protected $templateMap = array(
         self::ID3_ALBUM  => 'AudioTrack[IsTrackOf]',
         self::ID3_TITLE  => 'AudioTrack[TrackName]',
         self::ID3_ARTIST => 'AudioTrack[HasCreator]',

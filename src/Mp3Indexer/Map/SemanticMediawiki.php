@@ -49,7 +49,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      */
     public function getQuery($form)
     {
-        return $this->_getQuery($this->_templateMap, $form);
+        return $this->_getQuery($this->templateMap, $form);
     }
     
     /**
