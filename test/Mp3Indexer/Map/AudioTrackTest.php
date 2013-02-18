@@ -96,6 +96,9 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
             ->method('getTexts')
             ->will($this->returnValue(array('Hello World!')));
         
+        $data[] = $this->textFrameMock;
+        $this->object->setData($data);
+        
         $this->assertEquals(
             $this->object->getQuery(),
             array(
