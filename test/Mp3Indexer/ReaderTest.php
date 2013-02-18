@@ -102,6 +102,11 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             );
 
         $readerMock = $this->getMock('stdClass');
+        
+        $readerMock
+            ->expects($this->once())
+            ->method('getReturnValue')
+            ->will($this->returnValue(true));
 
         $this->readerFactoryMock
             ->staticExpects($this->once())
