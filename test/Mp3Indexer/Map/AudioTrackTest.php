@@ -74,7 +74,7 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
         $this->object->setData($data);
         $this->assertEquals(
             $this->object->getQuery(),
-            array('AudioTrack[Locator]=testdir/testfile')
+            array('AudioTrack[Locator]=' => 'testdir/testfile')
         );
     }
 }
