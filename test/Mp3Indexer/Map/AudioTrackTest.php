@@ -39,6 +39,16 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->textFrameMock = $this
+            ->getMockBuilder('Zend_Media_Id3_TextFrame')
+            ->setMethods(
+                array(
+                    'getIdentifier',
+                    'getTexts'
+                )
+            )
+            ->getMock();
+        
         $this->object = new Mp3Indexer_Map_AudioTrack;
     }
     
@@ -75,6 +85,23 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             $this->object->getQuery(),
             array('AudioTrack[Locator]=' => 'testdir/testfile')
+        );
+        
+        $this->textFrameMock
+            ->expects($this->exactly(1))
+            ->method('getIdentifier')
+            ->will($this->returnValue('TALB'));
+        $this->textFrameMock
+            ->expects($this->exactly(1))
+            ->method('getTexts')
+            ->will($this->returnValue(array('Hello World!')));
+        
+        $this->assertEquals(
+            $this->object->getQuery(),
+            array(
+                'AudioTrack[Locator]=' => 'testdir/testfile',
+                'AudioTrack[IsTrackOf]=' => 'Hello World!'
+            )
         );
     }
 }
