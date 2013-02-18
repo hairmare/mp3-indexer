@@ -24,7 +24,7 @@ require_once __DIR__.'/../../../src/Mp3Indexer/Map/AudioTrack.php';
  * @license  GPL http://www.gnu.org/licenses/gpl-3.0.txt
  * @link     http://github.com/purplehazech/mp3-indexer
  */
-class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
+class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Mp3Indexer_Map_AudioTrack
