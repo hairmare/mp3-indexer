@@ -106,6 +106,11 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             ->method('getReader')
             ->with('/tmp/hello/world')
             ->will($this->returnValue($this));
+        
+        $this->linterMock
+            ->expects($this->once())
+            ->method('getReturnValue')
+            ->will($this->returnValue(true));
 
         $this->object->read($event);
     }
@@ -115,11 +120,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
      * 
      * @return Booelan
      */
-    public function getReturnValue()
-    {
-        return true;
-    }
-    
     public function getFramesByIdentifier()
     {
         return array();
