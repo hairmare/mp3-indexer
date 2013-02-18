@@ -39,7 +39,8 @@ class Mp3Indexer_MwApiClient
     /**
      * create new api instance
      * 
-     * @param String $apiurl url to mediawikis api.php endpoint
+     * @param String     $apiurl url to mediawikis api.php endpoint
+     * @param Mp3Indexer $curl   oo wrapper to curl 
      */
     public function __construct($apiurl, Mp3Indexer_Curl $curl)
     {
