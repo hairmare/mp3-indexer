@@ -164,7 +164,7 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testReadError()
+    public function testReadException()
     {
         $event = $this->eventBuilder->getMock();
         $event->file = '/tmp/hello/world';
