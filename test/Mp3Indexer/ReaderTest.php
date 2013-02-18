@@ -101,23 +101,27 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
                 '/tmp/hello/world'
             );
 
-        $readerMock = $this
-            ->getMock('stdClass')
-            ->expects($this->once())
-            ->method('getReturnValue')
-            ->will($this->returnValue(true));
-
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
             ->with('/tmp/hello/world')
-            ->will($this->returnCallback(
-                function() use ($readerMock) {
-                    return $readerMock;
-                }
-            ));
-
+            ->will($this->returnValue($this));
 
         $this->object->read($event);
+    }
+    
+    /**
+     * shunt method for testRead
+     * 
+     * @return Booelan
+     */
+    public function getReturnValue()
+    {
+        return true;
+    }
+    
+    public function getFramesByIdentifier()
+    {
+        return array();
     }
 }
