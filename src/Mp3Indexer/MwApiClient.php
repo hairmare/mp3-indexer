@@ -143,9 +143,6 @@ class Mp3Indexer_MwApiClient
         
         $return = $this->_curl->exec();
         
-        if (!is_string($return)) {
-            // @todo build error handling
-        }
         return simplexml_load_string($return);
     }
     
