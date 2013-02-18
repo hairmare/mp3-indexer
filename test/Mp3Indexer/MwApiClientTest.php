@@ -40,6 +40,7 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
     {
         $this->curlMock = $this
             ->getMockBuilder('Mp3Indexer_Curl')
+            ->disableOriginalConstructor()
             ->getMock();
     
         $this->object = new Mp3Indexer_MwApiClient(
