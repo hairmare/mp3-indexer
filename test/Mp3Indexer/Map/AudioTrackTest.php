@@ -12,8 +12,8 @@
  * @link      http://github.com/purplehazech/mp3-indexer
  */
 
-require_once __DIR__.'/../../src/Mp3Indexer/Map/SemanticMediawiki.php';
-require_once __DIR__.'/../../src/Mp3Indexer/Map/AudioTrack.php';
+require_once __DIR__.'/../../../src/Mp3Indexer/Map/SemanticMediawiki.php';
+require_once __DIR__.'/../../../src/Mp3Indexer/Map/AudioTrack.php';
 
 /**
  * Test class for Mp3Indexer_Map_AudioTrack.
