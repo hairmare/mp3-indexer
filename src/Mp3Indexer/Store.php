@@ -76,8 +76,11 @@ class Mp3Indexer_Store
             
             foreach ($this->_maps AS $map) {
             	$map->setData($data);
+            	$target = $map->getTarget();
             	
-            	$this->_apiClient->sfautoedit($map::MW_FORM, $map->getTarget(), $map->getQuery());
+            	if ($target) {
+            		$this->_apiClient->sfautoedit($map::MW_FORM, $target, $map->getQuery());
+            	}
             }
         } catch (Exception $e) {
             // trigger error log event

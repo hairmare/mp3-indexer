@@ -29,6 +29,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
 	const ID3_TITLE = 'TIT2';
 	const ID3_ARTIST = 'TPE1';
 	const ID3_ALBUM = 'TALB';
+	const ID3_YEAR = 'TYER';
 	
 	public abstract function getTarget();
 	
@@ -40,7 +41,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
 	
 	protected function _getString($tagName) {
 		foreach ($this->_data AS $tag) {
-			if ($tag->getIdentifier() == $tagName) {
+			if (is_callable(array($tag,'getIdentifier')) && $tag->getIdentifier() == $tagName) {
 				return array_pop($this->_getSimpleValue($tag));
 			}
 		}

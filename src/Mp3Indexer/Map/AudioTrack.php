@@ -28,7 +28,8 @@
 	private $_templateMap = array(
 		self::ID3_ALBUM  => 'AudioTrack[IsTrackOf]',
 		self::ID3_TITLE  => 'AudioTrack[TrackName]',
-		self::ID3_ARTIST => 'AudioTrack[HasCreator]'
+		self::ID3_ARTIST => 'AudioTrack[HasCreator]',
+		self::ID3_YEAR   => 'AudioTrack[RecordDate]'
 	);
 	
 	public function getTarget()
