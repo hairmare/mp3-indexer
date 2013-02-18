@@ -66,6 +66,15 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
         $this->_data = $data;
     }
     
+    /**
+     * get file we are looking at
+     * 
+     * @return SplFileInfo
+     */
+    protected function getFile()
+    {
+        return $this->_data['file'];
+    }
     
     /**
      * gets the first string from an id3 frame

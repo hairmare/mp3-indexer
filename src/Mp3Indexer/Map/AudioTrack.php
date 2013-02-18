@@ -43,7 +43,7 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getTarget()
     {
-        return md5((string) $this->_data['file']);
+        return md5((string) $this->getFile());
     }
     
     /**
