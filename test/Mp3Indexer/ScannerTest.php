@@ -105,6 +105,8 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
  
         $this->object->scan();
     }
+    
+    private $_hasChildren = true;
 
     /**
      * shunt method for emulating files
@@ -113,6 +115,18 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
      */
     public function hasChildren()
     {
-        return false;
+        $return = $this->_hasChildren;
+        $this->_hasChildren = false;
+        return $return;
+    }
+    
+    /**
+     * more shunting for files
+     * 
+     * @return Array
+     */
+    public function getChildren()
+    {
+        return $this->iteratorMock;
     }
 }
