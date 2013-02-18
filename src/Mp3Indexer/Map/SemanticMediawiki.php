@@ -107,7 +107,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      */
     private function _getQuery($map, $form = self::MW_FORM)
     {
-        $query = array($form.'[Locator]=' => (string) $this->_data['file']);
+        $query = array($form.'[Locator]=' => (string) $this->getFile());
         foreach ($this->_data AS $tag) {
             if (!is_callable(array($tag, 'getIdentifier'))) {
                 continue;
@@ -115,7 +115,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
             $tagName = $tag->getIdentifier();
             if (!empty($map[$tagName])
             ) { 
-                $query[$map[$tagName].'='] = $this->_getString($tagName);
+                $query[$map[$tagName].'='] = $this->getString($tagName);
             }
         }
         return $query;
