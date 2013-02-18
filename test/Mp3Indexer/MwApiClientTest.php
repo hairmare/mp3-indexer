@@ -38,16 +38,6 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->loginData = new stdClass;
-        $this->loginData->login = array(
-            'cookieprefix' => 'Wiki',
-            'sessionid' => '123412341234',
-            'token' => 'asdfasdfasdf',
-            'lgusername' => 'Testuser',
-            'lguserid' => '1',
-            'lgtoken' => 'qwerqwerqwer'
-        );
-
         $this->curlMock = $this
             ->getMockBuilder('Mp3Indexer_Curl')
             ->disableOriginalConstructor()
@@ -66,10 +56,22 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
      */
     public function testLogin()
     {
+        $loginData = '<login>
+            <login>
+                <cookieprefix>Wiki</cookieprefix>
+                <sessionid>123412341234</sessionid>
+                <token>asdfasdfasdf</token>
+                <lgusername>Testuser</lgusername>
+                <lguserid>1</lguserid>
+                <lgtoken>qwerqwerqwer</lgtoken>
+            </login>
+        </login>';
+        
         $this->curlMock
             ->expects($this->atLeastOnce())
             ->method('exec')
-            ->will($this->returnValue($this->loginData));
+            ->will($this->returnValue($loginData));
+        
         $this->object->login('testuser', 'testpass');
     }
     
