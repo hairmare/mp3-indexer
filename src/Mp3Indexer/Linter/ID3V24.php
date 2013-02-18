@@ -2,6 +2,9 @@
 /**
  * id3 v24 requiring linter
  *
+ * This linter is based on the native id3 extenion in php.
+ * Since i don't use that anymore it might be rather broken.
+ *
  * PHP Version 5
  *
  * @category  Linter
