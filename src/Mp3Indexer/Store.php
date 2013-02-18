@@ -64,7 +64,7 @@ class Mp3Indexer_Store
     {
         $file = $event->file;
         $data = $event->data;
-        $data->file = $file;
+        $data['file'] = $file;
         $path = dirname($file);
 
         try {
