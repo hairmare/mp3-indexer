@@ -85,15 +85,20 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      */
     protected function getString($frameName)
     {
+        $string = null;
         foreach ($this->_data AS $tag) {
+            if ($string !== null) {
+                continue;
+            }
             if (!is_callable(array($tag, 'getIdentifier'))) {
                 continue;
             }
             if ($tag->getIdentifier() == $frameName) {
                 $values = $this->_getSimpleValue($tag);
-                return array_pop($values);
+                $string = array_pop($values);
             }
         }
+        return $string;
     }
 
     /**
@@ -127,31 +132,19 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      * @param Object $value a Zend_Media_* instance
      *
      * @return void
+     * 
+     * @todo readd listed classes as needed
+     * - Zend_Media_Id3_LinkFrame
+     * - Zend_Media_Id3_Frame_Ufid
+     * - Zend_Media_Id3_Frame_Apic
+     * - Zend_Media_Id3_Frame_Comm
+     * - Zend_Media_Id3_Frame_Priv
      */
     private function _getSimpleValue($value)
     {
+        $tagValues = array();
         if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
             $tagValues = $value->getTexts();
-        } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
-            $tagValues = array($value->getLink());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
-            // @todo implement serious loading
-            $tagValues = array($value->getOwner());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
-            // @todo implement picture loading
-            $tagValues = array($value->getImageType());
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
-            // @todo implement serious loading
-            $tagValues = array(
-                    $value->getDescription().' : '.$value->getText()
-            );
-        } else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
-            // @todo do we need all these
-            $tagValues = array(
-                    $value->getOwner().' : '.$value->getData()
-            );
-        } else {
-            $tagValues = array(var_export($value, true));
         }
         return $tagValues;
     }
