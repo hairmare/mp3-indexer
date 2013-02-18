@@ -51,6 +51,11 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
         $this->mwApiClientMock = $this
             ->getMockBuilder('Mp3Indexer_MwApiClient')
             ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'sfautoedit'
+                )
+            )
             ->getMock();
         $this->audioTrackMapMock = $this
             ->getMockBuilder('Mp3Indexer_Map_AudioTrack')
