@@ -53,8 +53,8 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
      * 
      * @return Array
      */
-    public function getQuery()
+    public function getQuery($form = self::MW_FORM)
     {
-        return parent::getQuery(self::MW_FORM);
+        return parent::getQuery($form);
     }
 }
