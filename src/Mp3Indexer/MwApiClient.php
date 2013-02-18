@@ -39,7 +39,7 @@ class Mp3Indexer_MwApiClient
     /**
      * create new api instance
      * 
-     * @param String $apiurl
+     * @param String $apiurl url to mediawikis api.php endpoint
      */
     public function __construct($apiurl)
     {
@@ -58,7 +58,7 @@ class Mp3Indexer_MwApiClient
      * 
      * @return void
      */
-    public function login($username, $password, $domain = NULL)
+    public function login($username, $password, $domain = null)
     {
         $args = array(
                 'lgname' => $username, 
@@ -69,21 +69,31 @@ class Mp3Indexer_MwApiClient
             'login',
             $args
         );
+        $prefix = $login->login['cookieprefix'];
         
-        $cookie = $login->login['cookieprefix'].'_session='.$login->login['sessionid'];
+        $cookie = $prefix.'_session='.$login->login['sessionid'];
 
         $args['lgtoken'] = $login->login['token'];
-        $this->_header = array('Cookie: '.$cookie);
+        $this->_header = array(
+            'Cookie: '.
+            $cookie
+        );
         $confirm = $this->_callApi(
             'login',
             $args
         );
         
-        $username = $confirm->login['cookieprefix'].'UserName='.$confirm->login['lgusername'];
-        $userid = $confirm->login['cookieprefix'].'UserID='.$confirm->login['lguserid'];
-        $token = $confirm->login['cookieprefix'].'Token='.$confirm->login['lgtoken'];
+        $username = $prefix.'UserName='.$confirm->login['lgusername'];
+        $userid = $prefix.'UserID='.$confirm->login['lguserid'];
+        $token = $prefix.'Token='.$confirm->login['lgtoken'];
         
-        $this->_header = array('Cookie: '.$cookie.'; '.$username.'; '.$userid.'; '.$token);
+        $this->_header = array(
+            'Cookie: '.
+            $cookie.'; '.
+            $username.'; '.
+            $userid.'; '.
+            $token
+        );
     }
     
     /**
@@ -115,10 +125,10 @@ class Mp3Indexer_MwApiClient
      * 
      * Call the api using the given params. 
      * 
-     * @param String $action mediawiki api action
-     * @param Array  $params mediawiki api params
-     * @param String $method POST or GET
-     * @param Array  $format mediawiki api format
+     * @param String  $action mediawiki api action
+     * @param Array   $params mediawiki api params
+     * @param Boolean $post   true to use POST, use GET otherwise
+     * @param Array   $format mediawiki api format
      * 
      * @return SimpleXMLElement
      */

@@ -43,9 +43,14 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * return an array of arguments to the sfautoedit api method query param
      * 
+     * @param String $form name of form to use
+     *
      * @return array
      */
-    public abstract function getQuery();
+    public function getQuery($form)
+    {
+        return $this->_getQuery($this->_templateMap, $form);
+    }
     
     /**
      * inject an array of information frames
@@ -58,6 +63,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     {
         $this->_data = $data;
     }
+    
     
     /**
      * gets the first string from an id3 frame
@@ -81,12 +87,12 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * generic query builder used by subclasses
      * 
-     * @todo rework to support file names through templating
-     * 
      * @param Array  $map  map of query templates
      * @param String $form name of smw form to use
      * 
      * @return Array
+     * 
+     * @todo rework to support file names through templating
      */
     private function _getQuery($map, $form = self::MW_FORM)
     {

@@ -21,7 +21,7 @@
  * @license  GPL http://www.gnu.org/licenses/gpl-3.0.txt
  * @link     http://github.com/purplehazech/mp3-indexer
  */
- class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
+class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
 {
     const MW_FORM = 'AudioTrack';
     
@@ -64,7 +64,6 @@
      */
     public function getQuery()
     {
-        return $this->_getQuery($this->_templateMap, self::MW_FORM);
+        return parent::getQuery(self::MW_FORM);
     }
-    
 }

@@ -66,7 +66,6 @@ class Mp3Indexer_Store
         $data = $event['data'];
         $data['file'] = $file;
         $path = dirname($file);
-        $name = basename($file);
 
         try {
             // create new file entry
