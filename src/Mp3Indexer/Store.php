@@ -62,9 +62,9 @@ class Mp3Indexer_Store
      */
     public function createOrUpdate(sfEvent $event)
     {
-        $file = $event['file'];
-        $data = $event['data'];
-        $data['file'] = $file;
+        $file = $event->file;
+        $data = $event->data;
+        $data->file = $file;
         $path = dirname($file);
 
         try {

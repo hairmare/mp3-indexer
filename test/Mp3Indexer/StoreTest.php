@@ -97,8 +97,8 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('Hello World!')));
 
         $event = clone $this->eventMock;
-        $event['file'] = 'testbase/testfile';
-        $event['data'] = array(
+        $event->file = 'testbase/testfile';
+        $event->data = array(
             $this->textFrameMock
         );
 
@@ -136,13 +136,13 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
     public function testCreateOrUpdateException()
     {
         $event = clone $this->eventMock;
-        $event['data'] = array();
+        $event->data = array();
 
         $this->dispatcherMock
             ->expects($this->exactly(2))
             ->method('notify');
 
-        $event['file'] = null;
+        $event->file = null;
         $this->assertFalse(
             $this->object->createOrUpdate(
                 $event
@@ -150,7 +150,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             "no file given"
         );
 
-        $event['file'] = 'base/file';
+        $event->file = 'base/file';
         $this->assertFalse(
             $this->object->createOrUpdate(
                 $event
