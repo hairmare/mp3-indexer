@@ -35,7 +35,6 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
     /**
      * return name based on data from request
      * 
-     * @todo rewrite this so it uses a sensible chksum (ala shorturl)
      * @todo add namespace support
      * 
      * @see Mp3Indexer_Map_SemanticMediawiki::getTarget()
@@ -44,15 +43,7 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getTarget()
     {
-        $track = $this->getString(self::ID3_TITLE);
-        $artist = $this->getString(self::ID3_ARTIST);
-        $album = $this->getString(self::ID3_ALBUM);
-        if ($album) {
-            $target = $track.' von '.$artist.' auf '.$album.' (Track)';
-        } else {
-            $target = $track.' von '.$artist.' (Track)';
-        }
-        return $target;
+        return md5((string) $this->_data['file']);
     }
     
     /**
