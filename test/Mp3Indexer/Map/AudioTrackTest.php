@@ -88,11 +88,11 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
         );
         
         $this->textFrameMock
-            ->expects($this->exactly(1))
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->will($this->returnValue('TALB'));
         $this->textFrameMock
-            ->expects($this->exactly(1))
+            ->expects($this->atLeastOnce())
             ->method('getTexts')
             ->will($this->returnValue(array('Hello World!')));
         
