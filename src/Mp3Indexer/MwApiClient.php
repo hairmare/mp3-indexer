@@ -48,6 +48,7 @@ class Mp3Indexer_MwApiClient
         $this->_curl = $curl;
         $this->_curl->setopt(CURLOPT_RETURNTRANSFER, 1);
         $this->_curl->setopt(CURLOPT_HEADER, 0);
+        $this->_curl->setopt(CURLOPT_POST, 1);
     }
     
     /**
@@ -128,30 +129,22 @@ class Mp3Indexer_MwApiClient
      * 
      * @param String  $action mediawiki api action
      * @param Array   $params mediawiki api params
-     * @param Boolean $post   true to use POST, use GET otherwise
      * @param Array   $format mediawiki api format
      * 
      * @return SimpleXMLElement
      */
-    private function _callApi($action, $params, $post = true, $format = 'xml')
+    private function _callApi($action, $params, $format = 'xml')
     {
         $url = $this->_apiurl.'?action='.$action.'&format='.$format;
-        if ($post) {
-             $this->_curl->setopt(CURLOPT_POST, $post);
-             $this->_curl->setopt(CURLOPT_POSTFIELDS, $params);
-        } else {
-            foreach ($params AS $name => $value) {
-                $url .= '&'.$name.'='.$value;
-            }
-        }
+        
+        $this->_curl->setopt(CURLOPT_POSTFIELDS, $params);
         $this->_curl->setopt(CURLOPT_HTTPHEADER, $this->_header);
         $this->_curl->setopt(CURLOPT_URL, $url);
+        
         $return = $this->_curl->exec();
         
         if (!is_string($return)) {
             // @todo build error handling
-            var_dump('ret', $return);
-            throw new Exception('le fail');
         }
         return simplexml_load_string($return);
     }
