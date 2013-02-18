@@ -39,7 +39,7 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Mp3Indexer_MapAudioTrack;
+        $this->object = new Mp3Indexer_Map_AudioTrack;
     }
     
     /**
