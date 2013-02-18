@@ -61,7 +61,7 @@ class Mp3Indexer_Scanner
     {
         foreach ($root AS $audioFile) {
 
-            if ($audioFile->isDir()) {
+            if ($audioFile->hasChildren()) {
                 $this->_recurse($root->getChildren());
             } else {
                 // create event and notify on audio files
