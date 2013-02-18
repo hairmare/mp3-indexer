@@ -44,9 +44,9 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getTarget()
     {
-        $track = $this->_getString(self::ID3_TITLE);
-        $artist = $this->_getString(self::ID3_ARTIST);
-        $album = $this->_getString(self::ID3_ALBUM);
+        $track = $this->getString(self::ID3_TITLE);
+        $artist = $this->getString(self::ID3_ARTIST);
+        $album = $this->getString(self::ID3_ALBUM);
         if ($album) {
             $target = $track.' von '.$artist.' auf '.$album.' (Track)';
         } else {

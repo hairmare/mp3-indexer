@@ -74,7 +74,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      * 
      * @return String|NULL
      */
-    private function _getString($frameName)
+    protected function getString($frameName)
     {
         foreach ($this->_data AS $tag) {
             if (!is_callable(array($tag, 'getIdentifier'))) {
