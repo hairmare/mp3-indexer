@@ -33,7 +33,7 @@ class Mp3Indexer_Store
     public function __construct(
         sfEventDispatcher $dispatcher,
         sfEvent $logEvent,
-    	Mp3Indexer_MwApiClient $apiClient
+        Mp3Indexer_MwApiClient $apiClient
     ) {
         $this->_dispatcher = $dispatcher;
         $this->_dispatcher->connect('mp3scan.data', array($this, 'createOrUpdate'));
@@ -44,10 +44,13 @@ class Mp3Indexer_Store
     /**
      * Add an output mapper to maps.
      * 
-     * @param Mp3Indexer_Map_SemanticMediawiki $map
+     * @param Mp3Indexer_Map_SemanticMediawiki $map mapper instance
+     * 
+     * @return void
      */
-    public function addMap(Mp3Indexer_Map_SemanticMediawiki $map) {
-    	$this->_maps[] = $map;
+    public function addMap(Mp3Indexer_Map_SemanticMediawiki $map)
+    {
+        $this->_maps[] = $map;
     }
 
     /**
@@ -75,12 +78,16 @@ class Mp3Indexer_Store
             }
             
             foreach ($this->_maps AS $map) {
-            	$map->setData($data);
-            	$target = $map->getTarget();
-            	
-            	if ($target) {
-            		$this->_apiClient->sfautoedit($map::MW_FORM, $target, $map->getQuery());
-            	}
+                $map->setData($data);
+                $target = $map->getTarget();
+                
+                if ($target) {
+                    $this->_apiClient->sfautoedit(
+                        $map::MW_FORM, 
+                        $target, 
+                        $map->getQuery()
+                    );
+                }
             }
         } catch (Exception $e) {
             // trigger error log event

@@ -25,71 +25,107 @@
  */
 abstract class Mp3Indexer_Map_SemanticMediawiki
 {
-	const MW_FORM = '';
-	const ID3_TITLE = 'TIT2';
-	const ID3_ARTIST = 'TPE1';
-	const ID3_ALBUM = 'TALB';
-	const ID3_YEAR = 'TYER';
-	
-	public abstract function getTarget();
-	
-	public abstract function getQuery();
-	
-	public function setData($data) {
-		$this->_data = $data;
-	}
-	
-	protected function _getString($tagName) {
-		foreach ($this->_data AS $tag) {
-			if (is_callable(array($tag,'getIdentifier')) && $tag->getIdentifier() == $tagName) {
-				return array_pop($this->_getSimpleValue($tag));
-			}
-		}
-	}
+    const MW_FORM = '';
+    const ID3_TITLE = 'TIT2';
+    const ID3_ARTIST = 'TPE1';
+    const ID3_ALBUM = 'TALB';
+    const ID3_YEAR = 'TYER';
+    
+    /**
+     * return target page name for mediawiki
+     * 
+     * this could use some kind of hashing method based on the filename
+     * 
+     * @return String
+     */
+    public abstract function getTarget();
+    
+    /**
+     * return an array of arguments to the sfautoedit api method query param
+     * 
+     * @return array
+     */
+    public abstract function getQuery();
+    
+    /**
+     * inject an array of information frames
+     * 
+     * @param Array $data contains id3 frames and the mathing file object
+     * 
+     * @return void
+     */
+    public function setData($data)
+    {
+        $this->_data = $data;
+    }
+    
+    /**
+     * gets the first string from an id3 frame
+     * 
+     * @param String $tagName
+     * 
+     * @return String|NULL
+     */
+    protected function _getString($tagName)
+    {
+        foreach ($this->_data AS $tag) {
+            if (is_callable(array($tag,'getIdentifier')) && $tag->getIdentifier() == $tagName) {
+                return array_pop($this->_getSimpleValue($tag));
+            }
+        }
+    }
 
-	protected function _getQuery($map, $form = self::MW_FORM)
-	{
-		$query = array($form.'[Locator]=' => (string) $this->_data['file']);
-		foreach ($this->_data AS $tag) {
-			if (is_callable(array($tag,'getIdentifier')) && !empty($map[$tag->getIdentifier()])) {
-				$query[$map[$tag->getIdentifier()].'='] = $this->_getString($tag->getIdentifier());
-			}
-		}
-		return $query;
-	}
+    /**
+     * generic query builder used by subclasses
+     * 
+     * @param Array $map   map of query templates
+     * @param String $form name of smw form to use
+     * 
+     * @return Array
+     */
+    protected function _getQuery($map, $form = self::MW_FORM)
+    {
+        $query = array($form.'[Locator]=' => (string) $this->_data['file']);
+        foreach ($this->_data AS $tag) {
+            if (is_callable(array($tag,'getIdentifier')) && !empty($map[$tag->getIdentifier()])) {
+                $query[$map[$tag->getIdentifier()].'='] = $this->_getString($tag->getIdentifier());
+            }
+        }
+        return $query;
+    }
 
-	/**
-	 * convert and insert found tags
-	 *
-	 * @param Object  $value  a Zend_Media_* instance
-	 *
-	 * @return void
-	 */
-	protected function _getSimpleValue($value)
-	{
-		if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
-			$tagValues = $value->getTexts();
-		} else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
-			$tagValues = array($value->getLink());
-		} else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
-			// @todo implement serious loading
-			$tagValues = array($value->getOwner());
-		} else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
-			// @todo implement picture loading
-			$tagValues = array($value->getImageType());
-		} else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
-			// @todo implement serious loading
-			$tagValues = array(
-					$value->getDescription().' : '.$value->getText()
-			);
-		} else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
-			// @todo do we need all these
-			$tagValues = array(
-					$value->getOwner().' : '.$value->getData()
-			);
-		} else {
-			$tagValues = array(var_export($value, true));
-		}
-		return $tagValues;
-	}
+    /**
+     * convert and insert found tags
+     *
+     * @param Object  $value  a Zend_Media_* instance
+     *
+     * @return void
+     */
+    protected function _getSimpleValue($value)
+    {
+        if (is_a($value, 'Zend_Media_Id3_TextFrame')) {
+            $tagValues = $value->getTexts();
+        } else if (is_a($value, 'Zend_Media_Id3_LinkFrame')) {
+            $tagValues = array($value->getLink());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Ufid')) {
+            // @todo implement serious loading
+            $tagValues = array($value->getOwner());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Apic')) {
+            // @todo implement picture loading
+            $tagValues = array($value->getImageType());
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Comm')) {
+            // @todo implement serious loading
+            $tagValues = array(
+                    $value->getDescription().' : '.$value->getText()
+            );
+        } else if (is_a($value, 'Zend_Media_Id3_Frame_Priv')) {
+            // @todo do we need all these
+            $tagValues = array(
+                    $value->getOwner().' : '.$value->getData()
+            );
+        } else {
+            $tagValues = array(var_export($value, true));
+        }
+        return $tagValues;
+    }
 }

@@ -41,10 +41,10 @@ sfServiceContainerAutoloader::register();
 $sc = new sfServiceContainerBuilder(
     array(
         'mp3root' => $_SERVER['HOME'].'/Music',
-    	'mw.apiurl'=> '',
-    	'mw.username' => '',
-    	'mw.password' => '',
-    	'mw.domain' => NULL,
+        'mw.apiurl'=> '',
+        'mw.username' => '',
+        'mw.password' => '',
+        'mw.domain' => NULL,
         'eyeD3.bin' => 'eyeD3',
     )
 );
@@ -86,7 +86,7 @@ $sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
     ->addArgument('%mw.apiurl%')
     ->addMethodCall(
         'login',
-    	array('%mw.username%', '%mw.password%', '%mw.domain%')
+        array('%mw.username%', '%mw.password%', '%mw.domain%')
     );
 
 // mappers for mediawiki pages
@@ -109,7 +109,7 @@ $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addArgument(new sfServiceReference('mwapiclient'))
     ->addMethodCall(
         'addMap',
-    	array(new sfServiceReference('mapaudiotrack'))
+        array(new sfServiceReference('mapaudiotrack'))
     );
 
 // linting
