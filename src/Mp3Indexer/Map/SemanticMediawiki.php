@@ -90,7 +90,8 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
                 continue;
             }
             if ($tag->getIdentifier() == $frameName) {
-                return array_pop($this->_getSimpleValue($tag));
+                $values = $this->_getSimpleValue($tag);
+                return array_pop($values);
             }
         }
     }
@@ -113,8 +114,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
                 continue;
             }
             $tagName = $tag->getIdentifier();
-            if (!empty($map[$tagName])
-            ) { 
+            if (!empty($map[$tagName])) { 
                 $query[$map[$tagName].'='] = $this->getString($tagName);
             }
         }
