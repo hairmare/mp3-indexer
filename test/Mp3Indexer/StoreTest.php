@@ -102,7 +102,9 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             $this->textFrameMock
         );
 
-        $this->object->addMap($this->audioTrackMapMock);
+        $this->object->addMap(
+            $this->audioTrackMapMock->getMock()
+        );
 
         $this->assertTrue(
             $this->object->createOrUpdate(
