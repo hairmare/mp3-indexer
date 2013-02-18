@@ -67,7 +67,7 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
     public function testLogin()
     {
         $this->curlMock
-            ->expect($this->atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturn($this->loginData);
         $this->object->login('testuser', 'testpass');
@@ -81,7 +81,7 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
     public function testSfautoedit()
     {
         $this->curlMock
-            ->expect($this->atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('exec')
             ->willReturn('<data>something</data>');
         $this->object->sfautoedit('TestFrom', 'TestTarget', array());
