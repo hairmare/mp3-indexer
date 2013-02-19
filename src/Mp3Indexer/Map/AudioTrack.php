@@ -49,6 +49,8 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
     /**
      * return query array
      * 
+     * @param String $form name of form to use
+     * 
      * @see Mp3Indexer_Map_SemanticMediawiki::getQuery()
      * 
      * @return Array

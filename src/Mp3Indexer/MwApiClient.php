@@ -127,9 +127,9 @@ class Mp3Indexer_MwApiClient
      * 
      * Call the api using the given params. 
      * 
-     * @param String  $action mediawiki api action
-     * @param Array   $params mediawiki api params
-     * @param Array   $format mediawiki api format
+     * @param String $action mediawiki api action
+     * @param Array  $params mediawiki api params
+     * @param Array  $format mediawiki api format
      * 
      * @return SimpleXMLElement
      */
