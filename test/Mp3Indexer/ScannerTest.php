@@ -39,7 +39,11 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->iteratorMock = new RecursiveArrayIterator();
+        $this->iteratorMock = new RecursiveArrayIterator(
+            new RecursiveDirectoryIterator(
+                __DIR__.'/../fixtures/testDir'
+            )
+        );
 
         $this->dispatcherMock = $this
             ->getMockBuilder('sfEventDispatcher')
@@ -105,8 +109,6 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
  
         $this->object->scan();
     }
-    
-    private $_hasChildren = true;
 
     /**
      * shunt method for emulating files
