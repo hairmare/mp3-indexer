@@ -131,7 +131,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      *
      * @param Object $value a Zend_Media_* instance
      *
-     * @return void
+     * @return Array
      * 
      * @todo readd listed classes as needed
      * - Zend_Media_Id3_LinkFrame
