@@ -59,16 +59,14 @@ class Mp3Indexer_Scanner
      */
     private function _recurse(RecursiveIterator $root)
     {
-        foreach ($root AS $audioFile) {
-
-            if ($audioFile->hasChildren()) {
-                $this->_recurse($audioFile->getChildren());
-            } else {
-                // create event and notify on audio files
-                $event = clone $this->_event;
-                $event->file = $audioFile;
-                $this->_dispatcher->notifyUntil($event);
-            }
+        if ($root->hasChildren()) {
+            $this->_recurse($root->getChildren());
+        } else {
+            // create event and notify on audio files
+            $event = clone $this->_event;
+            $event->file = $audioFile;
+            $this->_dispatcher->notifyUntil($event);
         }
     }
+    
 }
