@@ -107,11 +107,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     public function testRead()
     {
         $event = $this->eventBuilder->getMock();
-        $event['file'] = '/tmp/hello/world';
-        
-        $event->expects($this->once())
-            ->method('offsetSet')
-            ->with('file', '/tmp/hello/world');
         
         $event->expects($this->once())
             ->method('offsetGet')
@@ -141,11 +136,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     public function testReadError()
     {
         $event = $this->eventBuilder->getMock();
-        $event['file'] = '/tmp/hello/world';
-
-        $event->expects($this->once())
-            ->method('offsetSet')
-            ->with('file', '/tmp/hello/world');
         
         $event->expects($this->once())
             ->method('offsetGet')
