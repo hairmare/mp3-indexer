@@ -58,6 +58,10 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
 
         $eventBuilder = $this->eventBuilder = $this
             ->getMockBuilder('sfEvent')
+            ->setMethods(
+                'offsetGet',
+                'offsetSet'
+            )
             ->disableOriginalConstructor();
 
         $this->dataMock = $eventBuilder->getMock();
@@ -102,7 +106,16 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     {
         $event = $this->eventBuilder->getMock();
         $event['file'] = '/tmp/hello/world';
-
+        
+        $event->expects($this->once())
+            ->method('offsetSet')
+            ->with('file', '/tmp/hello/world');
+        
+        $event->expects($this->once())
+            ->method('offsetGet')
+            ->with('file')
+            ->will($this->returnValue($this));
+        
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
@@ -127,7 +140,16 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     {
         $event = $this->eventBuilder->getMock();
         $event['file'] = '/tmp/hello/world';
-    
+
+        $event->expects($this->once())
+            ->method('offsetSet')
+            ->with('file', '/tmp/hello/world');
+        
+        $event->expects($this->once())
+            ->method('offsetGet')
+            ->with('file')
+            ->will($this->returnValue($this));
+        
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
