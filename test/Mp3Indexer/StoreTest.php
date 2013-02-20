@@ -66,10 +66,13 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
                     'getQuery'
                 )
             );
+        $this->logMock = $this
+            ->getMockBuilder('Mp3Indexer_Log_Client')
+            ->getMock();
 
         $this->object = new Mp3Indexer_Store(
             $this->dispatcherMock,
-            $this->eventMock,
+            $this->logMock,
             $this->mwApiClientMock
         );
     }

@@ -67,7 +67,9 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor();
 
         $this->dataMock = $eventBuilder->getMock();
-        $this->logMock = $eventBuilder->getMock();
+        $this->logMock = $this
+            ->getMockBuilder('Mp3Indexer_Log_Client')
+            ->getMock();
         $this->readerFactoryMock = $this
             ->getMockBuilder('Mp3Indexer_ReaderImplFactory')
             ->getMock();
