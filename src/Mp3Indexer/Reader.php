@@ -28,7 +28,7 @@ class Mp3Indexer_Reader
      *
      * @param sfEventDispatcher            $dispatcher    main event dispatcher
      * @param sfEvent                      $dataEvent     event for storage dispatch
-     * @param sfEvent                      $logEvent      logging event
+     * @param Mp3Indexer_Log_Client        $logClient     log client instance
      * @param Mp3Indexer_ReaderImplFactory $readerFactory factory for getting readers
      * 
      * @return void
@@ -36,13 +36,13 @@ class Mp3Indexer_Reader
     public function __construct (
         sfEventDispatcher $dispatcher,
         sfEvent $dataEvent,
-        sfEvent $logEvent,
+        Mp3Indexer_Log_Client $logClient,
         Mp3Indexer_ReaderImplFactory $readerFactory
     ) {
         $this->_dispatcher = $dispatcher;
         $this->_dispatcher->connect('mp3scan.file', array($this, 'read'));
         $this->_dataEvent = $dataEvent;
-        $this->_logEvent = $logEvent;
+        $this->_log = $logClient;
         $this->_readerFactory = $readerFactory;
     }
 
@@ -55,30 +55,19 @@ class Mp3Indexer_Reader
      */
     public function read(sfEvent $event)
     {
-        $logError = false;
-        $file = $event['file'];
-
         try {
+            $file = $event['file'];
+            
             $reader = $this->_readerFactory->getReader($file);
             
             $data = $reader->getFramesByIdentifier('*');
 
             $event = clone $this->_dataEvent;
-            $event['file'] = $file;
+            $event->offsetSet('file',$file);
             $event['data'] = $data;
             $this->_dispatcher->notify($event);
-                
         } catch (Exception $e) {
-            $logError = true;
-            $logMessage = get_class($e).':'.$e->getMessage();
-        }
-
-        if ($logError) {
-            $event = clone $this->_logEvent;
-            $event->type = 'warning';
-            $event->message = $logMessage;
-            $event->file = $file;
-            $this->_dispatcher->notify($event);
+            $this->_log->debug($e->getMessage());
         }
     }
 }

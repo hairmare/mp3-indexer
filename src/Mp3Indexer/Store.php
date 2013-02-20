@@ -27,17 +27,17 @@ class Mp3Indexer_Store
      * create store and register events
      *
      * @param sfEventDispatcher      $dispatcher main event dispatcher
-     * @param sfEvent                $logEvent   logger event
+     * @param Mp3Indexer_Log_Client  $logClient     log client instance
      * @param Mp3Indexer_MwApiClient $apiClient  api client to mediawiki
      */
     public function __construct(
         sfEventDispatcher $dispatcher,
-        sfEvent $logEvent,
+        Mp3Indexer_Log_Client $logClient,
         Mp3Indexer_MwApiClient $apiClient
     ) {
         $this->_dispatcher = $dispatcher;
         $this->_dispatcher->connect('mp3scan.data', array($this, 'createOrUpdate'));
-        $this->_logEvent = $logEvent;
+        $this->_log = $logClient;
         $this->_apiClient = $apiClient;
     }
     
@@ -89,11 +89,7 @@ class Mp3Indexer_Store
                 }
             }
         } catch (Exception $e) {
-            // trigger error log event
-            $event = clone $this->_logEvent;
-            $event->type = 'error';
-            $event->message = $e->getMessage();
-            $this->_dispatcher->notify($event);
+            $this->_log->debug($e->getMessage());
             return false;
         }
         return true;
