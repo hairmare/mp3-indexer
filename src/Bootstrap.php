@@ -26,6 +26,8 @@ require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php
 require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Log/Client/Interface.php';
+require_once dirname(__FILE__).'/Mp3Indexer/Log/Client.php';
 require_once dirname(__FILE__).'/Mp3Indexer/MwApiClient.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Map/SemanticMediawiki.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Map/AudioTrack.php';
