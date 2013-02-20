@@ -45,8 +45,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
     /**
      * check for log calls
      *
-     * @covers Mp3Indexer_Log_Client::log
-     *
      * @return void
      */
     public function testLog()
@@ -57,8 +55,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * check for info calls
-     *
-     * @covers Mp3Indexer_Log_Client::info
      *
      * @return void
      */
@@ -72,8 +68,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * check for debug calls
-     *
-     * @covers Mp3Indexer_Log_Client::debug
      *
      * @return void
      */
