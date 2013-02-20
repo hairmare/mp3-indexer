@@ -39,7 +39,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->stdoutMock = $this->getMock('Mp3Indexer_Log_Stdout');
-        
         $this->object = new Mp3Indexer_Log_Client();
     }
 
@@ -52,10 +51,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
      */
     public function testLog()
     {
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('logEvent');
-        
         $this->object->registerLog($this->stdoutMock);
         $this->object->log("log message");
     }
@@ -69,10 +64,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
      */
     public function testInfo()
     {
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('logEvent');
-
         $this->object->registerLog($this->stdoutMock);
         $this->object->info("nolog message");
         $this->object->setVerbose();
@@ -88,10 +79,6 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
      */
     public function testDebug()
     {
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('logEvent');
-
         $this->object->registerLog($this->stdoutMock);
         $this->object->debug("nolog message");
         $this->object->setVerbose();
