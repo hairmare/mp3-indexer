@@ -39,33 +39,7 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->dispatcherMock = $this->getMock('sfEventDispatcher');
-
-        $this->eventMock = $this->getMockBuilder('sfEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->object = new Mp3Indexer_Log_Stdout(
-            $this->dispatcherMock
-        );
-    }
-
-    /**
-     * check constructor
-     *
-     * @covers Mp3Indexer_Log_Stdout::__construct
-     *
-     * @return void
-     */
-    public function testConstructor()
-    {
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('connect');
-
-        new Mp3Indexer_Log_Stdout(
-            $this->dispatcherMock
-        );
+        $this->object = new Mp3Indexer_Log_Stdout;
     }
 
     /**
@@ -79,6 +53,6 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
     {
         $this->expectOutputString("Message: test\n");
 
-        $this->object->logEvent('test');
+        $this->object->logString('test');
     }
 }
