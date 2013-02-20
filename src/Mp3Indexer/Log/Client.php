@@ -81,6 +81,17 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
     }
     
     /**
+     * register a logger that gets messages
+     * 
+     * @param Mp3Indexer_Log_Interface $log log implementation
+     * 
+     * @return void
+     */
+    public function registerLogger(Mp3Indexer_Log_Interface $log) {
+        $this->_loggers[] = $log;
+    }
+    
+    /**
      * dispatch a log event for Mp3Indexer_Log_Interface clients
      * 
      * @param String  $message message string
@@ -91,8 +102,8 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
         $doLog = $this->_level > $level;
         
         if ($doLog) {
-            foreach ($this->_logger AS $log) {
-                $this->_logger->logEvent($message);
+            foreach ($this->_loggers AS $log) {
+                $log->logEvent($message);
             }
         }
     }
