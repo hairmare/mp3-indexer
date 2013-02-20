@@ -38,8 +38,8 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->stdoutMock = $this
-            ->getMock('Mp3Indexer_Log_Stdout')
+        $this->stdoutMock = $this->getMock('Mp3Indexer_Log_Stdout');
+        $this->stdoutMock
             ->expects($this->once())
             ->method('logString')
             ->with("log message");
