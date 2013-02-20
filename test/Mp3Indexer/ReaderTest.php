@@ -126,7 +126,7 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     public function testReadError()
     {
         $event = $this->eventBuilder->getMock();
-        $event->file = '/tmp/hello/world';
+        $event['file'] = '/tmp/hello/world';
     
         $this->dispatcherMock
             ->expects($this->once())
@@ -155,7 +155,7 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     public function testReadException()
     {
         $event = $this->eventBuilder->getMock();
-        $event->file = '/tmp/hello/world';
+        $event['file'] = '/tmp/hello/world';
     
         $this->dispatcherMock
             ->expects($this->once())
