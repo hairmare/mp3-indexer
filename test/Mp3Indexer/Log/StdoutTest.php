@@ -75,13 +75,10 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testLogEvent()
+    public function testLogString()
     {
         $this->expectOutputString("Message: test\n");
 
-        $event = $this->eventMock;
-        $event->message = 'test';
-
-        $this->object->logEvent($event);
+        $this->object->logEvent('test');
     }
 }
