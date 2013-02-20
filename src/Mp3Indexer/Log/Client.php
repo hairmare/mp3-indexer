@@ -99,7 +99,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     private function _dispatchLog($message, $level)
     {
-        $doLog = $this->_level > $level;
+        $doLog = $this->_level >= $level;
         
         if ($doLog) {
             foreach ($this->_loggers AS $log) {
