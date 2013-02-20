@@ -23,4 +23,12 @@
  */
 interface Mp3Indexer_Log_Interface
 {
+    /**
+     * Logs a String type message.
+     * 
+     * @param String $message string to log
+     * 
+     * @return void
+     */
+    public function logString($message);
 }

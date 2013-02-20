@@ -23,31 +23,16 @@
  */
 class Mp3Indexer_Log_Stdout implements Mp3Indexer_Log_Interface
 {
-    /**
-     * create logger and register events
-     *
-     * @param sfEventDispatcher $dispatcher main event dispatcher
-     *
-     * @return void
-     */
-    public function __construct(
-        sfEventDispatcher $dispatcher
-    ) {
-        $this->_dispatcher = $dispatcher;
-        $this->_dispatcher->connect('log', array($this, 'logEvent'));
-    }
 
     /**
      * cat log message to stdout
      *
-     * @param sfEvent $event log event
+     * @param String $message log event
      *
      * @return void
      */
-    public function logEvent(sfEvent $event)
+    public function logString($message)
     {
-        if ($event->type == 'error') {
-            printf("Message: %s\n", $event->message);
-        }
+        printf("Message: %s\n", $message);
     }
 }

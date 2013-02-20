@@ -29,20 +29,6 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
     const LVL_DEBUG = 2;
     
     private $_level = self::LVL_LOG;
-    
-    /**
-     * create log client
-     * 
-     * @param sfEventDispatcher $eventDispatcher event dispatcher for sending log events
-     * @param sfEvent           $logEvent        clonable event to dispatch
-     * 
-     * @return void
-     */
-    public function __construct(sfEventDispatcher $eventDispatcher, sfEvent $logEvent)
-    {
-        $this->_eventDispatcher = $eventDispatcher;
-        $this->_logEvent = $logEvent;
-    }
 
     /**
      * Log normal log messages
@@ -105,9 +91,9 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
         $doLog = $this->_level > $level;
         
         if ($doLog) {
-            $event = clone $this->_logEvent;
-            $event['message'] = $message;
-            $this->_dispatcher->notify($event);
+            foreach ($this->_logger AS $log) {
+                $this->_logger->logEvent($message);
+            }
         }
     }
 }
