@@ -103,7 +103,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
         
         if ($doLog) {
             foreach ($this->_loggers AS $log) {
-                $log->logEvent($message);
+                $log->logString($message);
             }
         }
     }
