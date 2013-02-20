@@ -79,9 +79,6 @@ $sc->register('mp3lintevent', 'sfEvent')
 $sc->register('mp3dataevent', 'sfEvent')
     ->addArgument(new stdClass)
     ->addArgument('mp3scan.data');
-$sc->register('logevent', 'sfEvent')
-    ->addArgument(new stdClass)
-    ->addArgument('log');
 
 // wrapper for reading mps data
 $sc->register('readerimplfactory', 'Mp3Indexer_ReaderImplFactory');
@@ -107,11 +104,11 @@ $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('mp3lintevent'))
     ->addArgument(new sfServiceReference('mp3dataevent'))
-    ->addArgument(new sfServiceReference('logevent'))
+    ->addArgument(new sfServiceReference('mp3logclient'))
     ->addArgument(new sfServiceReference('readerimplfactory'));
 $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addArgument(new sfServiceReference('dispatcher'))
-    ->addArgument(new sfServiceReference('logevent'))
+    ->addArgument(new sfServiceReference('mp3logclient'))
     ->addArgument(new sfServiceReference('mwapiclient'))
     ->addMethodCall(
         'addMap',
