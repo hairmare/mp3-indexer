@@ -12,6 +12,7 @@
  * @link      http://github.com/purplehazech/mp3-indexer
  */
 
+
 /**
  * log client
  *
@@ -23,6 +24,12 @@
  */
 class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
 {
+    const LVL_LOG = 0;
+    const LVL_INFO = 1;
+    const LVL_DEBUG = 2;
+    
+    private $_level = self::LVL_LOG;
+    
     /**
      * create log client
      * 
@@ -33,6 +40,8 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     public function __construct(sfEventDispatcher $eventDispatcher, sfEvent $logEvent)
     {
+        $this->_eventDispatcher = $eventDispatcher;
+        $this->_logEvent = $logEvent;
     }
 
     /**
@@ -44,7 +53,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     public function log($message)
     {
-        
+        $this->_dispatchLog($message, self::LVL_LOG);
     }
 
     /**
@@ -58,7 +67,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     public function info($message)
     {
-        
+        $this->_dispatchLog($message, self::LVL_INFO);
     }
     
     /**
@@ -72,7 +81,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     public function debug($message)
     {
-        
+        $this->_dispatchLog($message, self::LVL_DEBUG);
     }
     
     /**
@@ -82,7 +91,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     public function setVerbose()
     {
-        
+        $this->_level++;
     }
     
     /**
@@ -93,6 +102,12 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      */
     private function _dispatchLog($message, $level)
     {
+        $doLog = $this->_level > $level;
         
+        if ($doLog) {
+            $event = clone $this->_logEvent;
+            $event['message'] = $message;
+            $this->_dispatcher->notify($event);
+        }
     }
 }
