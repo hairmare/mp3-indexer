@@ -45,7 +45,7 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
     /**
      * check for output
      *
-     * @covers Mp3Indexer_Log_Stdout::logEvent
+     * @covers Mp3Indexer_Log_Stdout::logString
      *
      * @return void
      */
