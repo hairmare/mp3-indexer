@@ -59,8 +59,10 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
         $eventBuilder = $this->eventBuilder = $this
             ->getMockBuilder('sfEvent')
             ->setMethods(
-                'offsetGet',
-                'offsetSet'
+                array(
+                    'offsetGet',
+                    'offsetSet'
+                )
             )
             ->disableOriginalConstructor();
 
