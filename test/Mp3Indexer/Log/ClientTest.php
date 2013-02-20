@@ -45,7 +45,8 @@ class Mp3Indexer_Log_ClientTest extends PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->object = new Mp3Indexer_Log_Client(
-            $this->dispatcherMock
+            $this->dispatcherMock,
+            $this->eventMock
         );
     }
 
