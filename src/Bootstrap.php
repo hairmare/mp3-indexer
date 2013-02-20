@@ -23,7 +23,6 @@ require_once dirname(__FILE__).
 require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
 require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Linter/ID3V24.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
 require_once dirname(__FILE__).'/Mp3Indexer/Log/Client/Interface.php';
@@ -126,6 +125,10 @@ $sc->register('mp3lint.id3v34', 'Mp3Indexer_Linter_ID3V24')
 // loggers
 $sc->register('logstdout', 'Mp3Indexer_Log_Stdout')
     ->addArgument(new sfServiceReference('dispatcher'));
+
+// log system
+$sc->register('mp3logclient', 'Mp3Indexer_Log_Client')
+    ->addArgument(new sfServiceReference('logstdout'));
 
 // as well as something to tie everything together
 $sc->register('mp3indexer', 'Mp3Indexer')
