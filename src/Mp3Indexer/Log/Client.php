@@ -76,6 +76,16 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
     }
     
     /**
+     * increase verbosity
+     * 
+     * @return void
+     */
+    public function setVerbose()
+    {
+        
+    }
+    
+    /**
      * dispatch a log event for Mp3Indexer_Log_Interface clients
      * 
      * @param String  $message message string
