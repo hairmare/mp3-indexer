@@ -60,7 +60,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder('sfEvent')
             ->disableOriginalConstructor();
 
-        $this->linterMock = $eventBuilder->getMock();
         $this->dataMock = $eventBuilder->getMock();
         $this->logMock = $eventBuilder->getMock();
         $this->readerFactoryMock = $this
@@ -69,7 +68,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
                                  
         $this->object = new Mp3Indexer_Reader(
             $this->dispatcherMock,
-            $this->linterMock,
             $this->dataMock,
             $this->logMock,
             $this->readerFactoryMock
@@ -87,7 +85,6 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     {
         new Mp3Indexer_Reader(
             $this->dispatcherMock,
-            $this->linterMock,
             $this->dataMock,
             $this->logMock,
             $this->readerFactoryMock
@@ -106,24 +103,15 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
         $event = $this->eventBuilder->getMock();
         $event->file = '/tmp/hello/world';
 
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('filter')
-            ->with(
-                $this->linterMock,
-                '/tmp/hello/world'
-            );
-
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
             ->with('/tmp/hello/world')
             ->will($this->returnValue($this));
         
-        $this->linterMock
+        $this->dispatcherMock
             ->expects($this->once())
-            ->method('getReturnValue')
-            ->will($this->returnValue(true));
+            ->method('notify');
 
         $this->object->read($event);
     }
