@@ -87,7 +87,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      * 
      * @return void
      */
-    public function registerLogger(Mp3Indexer_Log_Interface $log) {
+    public function registerLog(Mp3Indexer_Log_Interface $log) {
         $this->_loggers[] = $log;
     }
     
