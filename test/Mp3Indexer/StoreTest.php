@@ -134,7 +134,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
         $event->data = array();
 
         $this->dispatcherMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly(1))
             ->method('notify');
 
         $event->file = null;
