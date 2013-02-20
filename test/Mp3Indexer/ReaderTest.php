@@ -101,7 +101,7 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
     public function testRead()
     {
         $event = $this->eventBuilder->getMock();
-        $event->file = '/tmp/hello/world';
+        $event['file'] = '/tmp/hello/world';
 
         $this->readerFactoryMock
             ->staticExpects($this->once())
@@ -128,55 +128,12 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
         $event = $this->eventBuilder->getMock();
         $event['file'] = '/tmp/hello/world';
     
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('filter')
-            ->with(
-                $this->linterMock,
-                '/tmp/hello/world'
-            );
-    
         $this->readerFactoryMock
             ->staticExpects($this->once())
             ->method('getReader')
             ->with('/tmp/hello/world')
             ->will($this->returnValue($this));
     
-        $this->object->read($event);
-    }
-    
-    /**
-     * test read method, exception case
-     *
-     * @covers Mp3Indexer_Reader::read
-     *
-     * @return void
-     */
-    public function testReadException()
-    {
-        $event = $this->eventBuilder->getMock();
-        $event['file'] = '/tmp/hello/world';
-    
-        $this->dispatcherMock
-            ->expects($this->once())
-            ->method('filter')
-            ->with(
-                $this->linterMock,
-                '/tmp/hello/world'
-            );
-    
-        $this->readerFactoryMock
-            ->staticExpects($this->once())
-            ->method('getReader')
-            ->with('/tmp/hello/world')
-            ->will($this->returnValue($this));
-
-        $this->getReturnValueThrows = new Exception();
-        $this->linterMock
-            ->expects($this->once())
-            ->method('getReturnValue')
-            ->will($this->returnValue(true));
-        
         $this->object->read($event);
     }
 }
