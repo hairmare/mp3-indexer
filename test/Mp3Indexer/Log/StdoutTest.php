@@ -81,7 +81,6 @@ class Mp3Indexer_Log_StdoutTest extends PHPUnit_Framework_TestCase
 
         $event = $this->eventMock;
         $event->message = 'test';
-        $event->type = 'error';
 
         $this->object->logEvent($event);
     }
