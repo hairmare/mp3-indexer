@@ -81,8 +81,6 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
     /**
      * only checks for empty recursion as of now
      *
-     * @covers Mp3Indexer_Scanner::scan 
-     *
      * @return void
      */
     public function testScan()
