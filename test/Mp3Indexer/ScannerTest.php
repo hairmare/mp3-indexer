@@ -89,46 +89,4 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
     {
         $this->object->scan();
     }
-
-    /**
-     * check looping to kids
-     *
-     * @covers Mp3Indexer_Scanner::_recurse
-     *
-     * @return void
-     */
-    public function testRecurse()
-    {
-        $this->iteratorMock[] = $this;
-
-        $this->object = new Mp3Indexer_Scanner(
-            $this->iteratorMock,
-            $this->dispatcherMock,
-            $this->eventMock
-        );
- 
-        $this->object->scan();
-    }
-
-    /**
-     * shunt method for emulating files
-     *
-     * @return Boolean
-     */
-    public function hasChildren()
-    {
-        $return = $this->_hasChildren;
-        $this->_hasChildren = false;
-        return $return;
-    }
-    
-    /**
-     * more shunting for files
-     * 
-     * @return Array
-     */
-    public function getChildren()
-    {
-        return $this->iteratorMock;
-    }
 }
