@@ -111,7 +111,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->expects($this->at(1))
             ->method('offsetGet')
             ->with('data')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue(array(new stdClass)));
         
         $this->object->addMap(
             $audioTrackMapMock
