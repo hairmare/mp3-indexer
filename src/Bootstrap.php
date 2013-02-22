@@ -68,6 +68,8 @@ $sc->register('musiciterator', 'RecursiveDirectoryIterator')
     ->addArgument('%mp3root%');
 $sc->register('audiofilteriterator', 'Mp3Indexer_AudioFileRecursiveFilterIterator')
     ->addArgument(new sfServiceReference('musiciterator'));
+$sc->register('iteratoriterator', 'RecursiveIteratorIterator')
+    ->addArgument(new sgServiceReference('audiofilteriterator'));
 
 // some events that folks may clone
 $sc->register('mp3fileevent', 'sfEvent')
@@ -97,7 +99,7 @@ $sc->register('mapaudiotrack', 'Mp3Indexer_Map_AudioTrack');
 
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
-    ->addArgument(new sfServiceReference('audiofilteriterator'))
+    ->addArgument(new sfServiceReference('iteratoriterator'))
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('mp3fileevent'));
 $sc->register('mp3reader', 'Mp3Indexer_Reader')

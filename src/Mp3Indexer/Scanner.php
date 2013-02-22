@@ -26,12 +26,12 @@ class Mp3Indexer_Scanner
     /**
      * create scanner
      *
-     * @param RecursiveIterator $iterator   iterator to recurse over
-     * @param sfEventDispatcher $dispatcher main event dispatcher
-     * @param sfEvent           $event      file detected event
+     * @param RecursiveIteratorIterator $iterator   iterator to recurse over
+     * @param sfEventDispatcher         $dispatcher main event dispatcher
+     * @param sfEvent                   $event      file detected event
      */
     public function __construct(
-        RecursiveIterator $iterator,
+        RecursiveIteratorIterator $iterator,
         sfEventDispatcher $dispatcher,
         sfEvent $event
     ) {
@@ -57,17 +57,13 @@ class Mp3Indexer_Scanner
      *
      * @return void
      */
-    private function _recurse(RecursiveIterator $root)
+    private function _recurse(RecursiveIteratorIterator $root)
     {
         foreach ($root AS $file) {
-            if ($root->hasChildren()) {
-                $this->_recurse($root->getChildren());
-            } else {
-                // create event and notify on audio files
-                $event = clone $this->_event;
-                $event['file'] = $file;
-                $this->_dispatcher->notifyUntil($event);
-            }
+            // create event and notify on audio files
+            $event = clone $this->_event;
+            $event['file'] = $file;
+            $this->_dispatcher->notifyUntil($event);
         }
     }
     
