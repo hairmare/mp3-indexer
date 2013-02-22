@@ -129,31 +129,55 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
      *
      * @covers Mp3Indexer_Store::createOrUpdate
      *
-     * @todo Implement testCreateOrUpdate().
-     *
      * @return void
      */
-    public function testCreateOrUpdateException()
+    public function testCreateOrUpdateMissingFileException()
     {
-        $event = clone $this->eventMock;
-        $event->data = array();
-
         $this->dispatcherMock
-            ->expects($this->exactly(1))
+            ->expects($this->exactly(0))
             ->method('notify');
-
-        $event->file = null;
+        
+        $this->eventMock
+            ->expects($this->at(0))
+            ->method('offsetGet')
+            ->with('file')
+            ->will($this->returnValue(null));
+        
         $this->assertFalse(
             $this->object->createOrUpdate(
-                $event
+                $this->eventMock
             ),
             "no file given"
         );
 
-        $event->file = 'base/file';
+    }
+    /**
+     * test public method and private dependants
+     *
+     * @covers Mp3Indexer_Store::createOrUpdate
+     *
+     * @return void
+     */
+    public function testCreateOrUpdateMissingDataException()
+    {
+        $this->dispatcherMock
+            ->expects($this->exactly(0))
+            ->method('notify');
+        
+        $this->eventMock
+            ->expects($this->at(0))
+            ->method('offsetGet')
+            ->with('file')
+            ->will($this->returnValue('testdir/testfile'));
+        $this->eventMock
+            ->expects($this->at(1))
+            ->method('offsetGet')
+            ->with('data')
+            ->will($this->returnValue(array()));
+        
         $this->assertFalse(
             $this->object->createOrUpdate(
-                $event
+                $this->eventMock
             ),
             "no data in event"
         );
