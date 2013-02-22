@@ -102,19 +102,24 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->method('getQuery')
             ->will($this->returnValue(array('Hello World!')));
 
-        $event = clone $this->eventMock;
-        $event->file = 'testbase/testfile';
-        $event->data = array(
-            new stdClass
-        );
-
+        $this->eventMock
+            ->expects($this->at(0))
+            ->method('offsetGet')
+            ->with('file')
+            ->will($this->returnValue('testbase/testfile'));
+        $this->eventMock
+            ->expects($this->at(1))
+            ->method('offsetGet')
+            ->with('data')
+            ->will($this->returnValue(array()));
+        
         $this->object->addMap(
             $audioTrackMapMock
         );
 
         $this->assertTrue(
             $this->object->createOrUpdate(
-                $event
+                $this->eventMock
             )
         );
     }
