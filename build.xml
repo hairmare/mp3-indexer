@@ -83,17 +83,6 @@
     </target>
 
     <target name="bump-version">
-        <exec executable="awk" failonerror="true" output="VERSION">
-            <arg value="-F." />
-            <arg value='1{$NF+=1; OFS="."; print $0}'/>
-            <arg value="VERSION"/>
-        </exec>
-        <exec executable="git" failonerror="true">
-            <arg value="commit"/>
-            <arg value="-m"/>
-            <arg value="version bump"/>
-            <arg value="VERSION"/>
-        </exec>
     </target>
 
 
