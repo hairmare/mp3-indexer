@@ -102,7 +102,6 @@ $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
     ->addArgument(new sfServiceReference('mp3fileevent'));
 $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('dispatcher'))
-    ->addArgument(new sfServiceReference('mp3lintevent'))
     ->addArgument(new sfServiceReference('mp3dataevent'))
     ->addArgument(new sfServiceReference('mp3logclient'))
     ->addArgument(new sfServiceReference('readerimplfactory'));
