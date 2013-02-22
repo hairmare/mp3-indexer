@@ -63,7 +63,7 @@ class Mp3Indexer_Reader
             $data = $reader->getFramesByIdentifier('*');
 
             $event = clone $this->_dataEvent;
-            $event->offsetSet('file',$file);
+            $event->offsetSet('file', $file);
             $event['data'] = $data;
             $this->_dispatcher->notify($event);
         } catch (Exception $e) {

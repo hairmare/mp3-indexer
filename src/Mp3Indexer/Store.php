@@ -27,7 +27,7 @@ class Mp3Indexer_Store
      * create store and register events
      *
      * @param sfEventDispatcher      $dispatcher main event dispatcher
-     * @param Mp3Indexer_Log_Client  $logClient     log client instance
+     * @param Mp3Indexer_Log_Client  $logClient  log client instance
      * @param Mp3Indexer_MwApiClient $apiClient  api client to mediawiki
      */
     public function __construct(

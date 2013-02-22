@@ -48,7 +48,7 @@ interface Mp3Indexer_Log_Client_Interface
      * 
      * Debug messages contain data related to setup, teardown and exception handling.
      * 
-     * @param String $message
+     * @param String $message message string
      * 
      * @return void
      */

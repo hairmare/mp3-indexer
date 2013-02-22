@@ -61,7 +61,7 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      *
      * Debug messages contain data related to setup, teardown and exception handling.
      *
-     * @param String $message
+     * @param String $message message string
      *
      * @return void
      */
@@ -87,7 +87,8 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      * 
      * @return void
      */
-    public function registerLog(Mp3Indexer_Log_Interface $log) {
+    public function registerLog(Mp3Indexer_Log_Interface $log)
+    {
         $this->_loggers[] = $log;
     }
     
@@ -96,6 +97,8 @@ class Mp3Indexer_Log_Client implements Mp3Indexer_Log_Client_Interface
      * 
      * @param String  $message message string
      * @param Integer $level   message level
+     * 
+     * @return void
      */
     private function _dispatchLog($message, $level)
     {
