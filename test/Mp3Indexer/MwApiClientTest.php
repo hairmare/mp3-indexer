@@ -38,6 +38,9 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->logMock = $this
+            ->getMockBuilder('Mp3Indexer_Log_Client')
+            ->getMock();
         $this->curlMock = $this
             ->getMockBuilder('Mp3Indexer_Curl')
             ->disableOriginalConstructor()
@@ -45,7 +48,8 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
     
         $this->object = new Mp3Indexer_MwApiClient(
             'http://example.com/wiki/api.php',
-            $this->curlMock
+            $this->curlMock,
+            $this->logMock
         );
     }
     
@@ -56,7 +60,7 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
      */
     public function testLogin()
     {
-        $this->logMock = $this
+        $this->logMock
             ->expects($this->atLeastOnce())
             ->method('log');
         $loginData = '<login>
