@@ -108,6 +108,10 @@ class Mp3Indexer_ReaderTest extends PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
+        $this->logMock = $this
+            ->expects($this->atLeastOnce())
+            ->method('log');
+        
         $event = $this->eventBuilder->getMock();
         
         $event->expects($this->once())

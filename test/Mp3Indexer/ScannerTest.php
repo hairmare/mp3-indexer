@@ -38,7 +38,7 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
      * @return void
      */
     protected function setUp()
-    {
+    {   
         $this->iteratorMock = new RecursiveIteratorIterator(
             new Mp3Indexer_AudioFileRecursiveFilterIterator(
                 new RecursiveDirectoryIterator(
@@ -87,6 +87,10 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
      */
     public function testScan()
     {
+        $this->logMock = $this
+            ->expects($this->atLeastOnce())
+            ->method('log');
+        
         $this->object->scan();
     }
 }
