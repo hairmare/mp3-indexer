@@ -87,7 +87,7 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
      */
     public function testScan()
     {
-        $this->logMock = $this
+        $this->logMock
             ->expects($this->atLeastOnce())
             ->method('log');
         

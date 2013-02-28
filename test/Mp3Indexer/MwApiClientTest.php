@@ -85,7 +85,7 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
      */
     public function testSfautoedit()
     {
-        $this->logMock = $this
+        $this->logMock
             ->expects($this->atLeastOnce())
             ->method('log');
         $this->curlMock

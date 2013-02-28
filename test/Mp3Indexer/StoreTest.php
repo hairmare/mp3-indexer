@@ -86,7 +86,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateOrUpdate()
     {
-        $this->logMock = $this
+        $this->logMock
             ->expects($this->atLeastOnce())
             ->method('log');
         
