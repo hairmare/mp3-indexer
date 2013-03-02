@@ -81,6 +81,7 @@ $sc->register('readerimplfactory', 'Mp3Indexer_ReaderImplFactory');
 $sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
     ->addArgument('%mw.apiurl%')
     ->addArgument(new sfServiceReference('curl'))
+    ->addArgument(new sfServiceReference('mp3logclient'))
     ->addMethodCall(
         'login',
         array('%mw.username%', '%mw.password%', '%mw.domain%')
@@ -93,7 +94,8 @@ $sc->register('mapaudiotrack', 'Mp3Indexer_Map_AudioTrack');
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
     ->addArgument(new sfServiceReference('iteratoriterator'))
     ->addArgument(new sfServiceReference('dispatcher'))
-    ->addArgument(new sfServiceReference('mp3fileevent'));
+    ->addArgument(new sfServiceReference('mp3fileevent'))
+    ->addArgument(new sfServiceReference('mp3logclient'));
 $sc->register('mp3reader', 'Mp3Indexer_Reader')
     ->addArgument(new sfServiceReference('dispatcher'))
     ->addArgument(new sfServiceReference('mp3dataevent'))
@@ -118,15 +120,14 @@ $sc->register('logstdout', 'Mp3Indexer_Log_Stdout')
 
 // log system
 $sc->register('mp3logclient', 'Mp3Indexer_Log_Client')
-    ->addArgument(new sfServiceReference('logstdout'));
+    ->addMethodCall(
+        'registerLog',
+        array(new sfServiceReference('logstdout'))
+    );
 
 // as well as something to tie everything together
 $sc->register('mp3indexer', 'Mp3Indexer')
     ->addArgument(new sfServiceReference('mp3scanner'))
     ->addArgument(new sfServiceReference('mp3reader'))
     ->addArgument(new sfServiceReference('mp3store'))
-    ->addArgument(array())
-    ->addMethodCall(
-        'addLogger',
-        array(new sfServiceReference('logstdout'))
-    );
+    ->addArgument(array());
