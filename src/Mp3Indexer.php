@@ -46,18 +46,6 @@ class Mp3Indexer
     }
 
     /**
-     * add a logger to the looger stack
-     *
-     * @param Mp3Indexer_Log_Interface $logger logger to add
-     *
-     * @return void
-     */
-    public function addLogger(Mp3Indexer_Log_Interface $logger)
-    {
-        $this->_loggerStack[] = $logger;
-    }
-
-    /**
      * tell scanner to run
      *
      * @return void
