@@ -56,11 +56,16 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder('sfEvent')
             ->disableOriginalConstructor()
             ->getMock();
-
+        
+        $this->logMock = $this
+            ->getMockBuilder('Mp3Indexer_Log_Client')
+            ->getMock();
+        
         $this->object = new Mp3Indexer_Scanner(
             $this->iteratorMock,
             $this->dispatcherMock,
-            $this->eventMock
+            $this->eventMock,
+            $this->logMock
         );
     }
 
@@ -76,7 +81,8 @@ class Mp3Indexer_ScannerTest extends PHPUnit_Framework_TestCase
         new Mp3Indexer_Scanner(
             $this->iteratorMock,
             $this->dispatcherMock,
-            $this->eventMock
+            $this->eventMock,
+            $this->logMock
         );
     }
 
