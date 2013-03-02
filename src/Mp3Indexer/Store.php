@@ -67,6 +67,8 @@ class Mp3Indexer_Store
         $path = dirname($file);
 
         try {
+            $this->_log->log(sprintf("creating or updating record for file %s", $file));
+            
             // create new file entry
             if (empty($path)) {
                 throw new RuntimeException("empty path detected");
