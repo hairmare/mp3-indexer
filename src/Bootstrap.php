@@ -22,23 +22,15 @@ require_once dirname(__FILE__).
     '/../lib/sf-dependency-injection/lib/sfServiceContainerAutoloader.php';
 require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
-require_once dirname(__FILE__).'/Mp3Indexer/AudioFileRecursiveFilterIterator.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Log/Interface.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Log/Stdout.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Log/Client/Interface.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Log/Client.php';
-require_once dirname(__FILE__).'/Mp3Indexer/MwApiClient.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Map/SemanticMediawiki.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Map/AudioTrack.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Curl.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Scanner.php';
-require_once dirname(__FILE__).'/Mp3Indexer/ReaderImplFactory.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Reader.php';
-require_once dirname(__FILE__).'/Mp3Indexer/Store.php';
-require_once dirname(__FILE__).'/Mp3Indexer.php';
 
+// basic autoloader for Mp3Indexer_ Classes
+spl_autoload_register(function ($class) {
+    if (substr($class, 0, 10) == 'Mp3Indexer') {
+        require __DIR__.'/'.strtr($class, '_', '/').'.php';
+    }
+});
 sfServiceContainerAutoloader::register();
- 
+    
 // setup dependency injection
 $sc = new sfServiceContainerBuilder(
     array(
