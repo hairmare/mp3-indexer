@@ -77,6 +77,18 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     }
     
     /**
+     * set namespace for getTarget
+     * 
+     * @param String $namespace Namespace
+     * 
+     * @return void
+     */
+    protected function setNamespace($namespace)
+    {
+        $this->_namespace = $namespace;
+    }
+    
+    /**
      * gets the first string from an id3 frame
      * 
      * @param String $frameName Id3 frame name
