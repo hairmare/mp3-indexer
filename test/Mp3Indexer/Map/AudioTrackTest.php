@@ -64,10 +64,29 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
         );
         $this->object->setData($data);
         
-        // expect a md5sum of the file location 
         $this->assertEquals(
             $this->object->getTarget(),
-            '88c35f93367ba1e9e388d93a8db92069' // == md5sum('testdir/testfile')
+            'testdir/testfile'
+        );
+    }
+    
+    /**
+     * test to see if getTarget honors setNamespace
+     * 
+     * @return void
+     */
+    public function testGetTargetWithNamespace()
+    {
+        $this->object->setNamespace('Musik');
+
+        $data = array(
+            'file' => 'testdir/testfile'
+        );
+        $this->object->setData($data);
+        
+        $this->assertEquals(
+            $this->object->getTarget(),
+            'Musik:testdir/testfile'
         );
     }
     
