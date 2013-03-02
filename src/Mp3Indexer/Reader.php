@@ -57,6 +57,8 @@ class Mp3Indexer_Reader
     {
         try {
             $file = $event['file'];
+
+            $this->_log->log(sprintf("Reading file %s", $file));
             
             $reader = $this->_readerFactory->getReader($file);
             
