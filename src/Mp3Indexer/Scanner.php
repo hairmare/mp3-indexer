@@ -26,18 +26,21 @@ class Mp3Indexer_Scanner
     /**
      * create scanner
      *
-     * @param RecursiveIteratorIterator $iterator   iterator to recurse over
-     * @param sfEventDispatcher         $dispatcher main event dispatcher
-     * @param sfEvent                   $event      file detected event
+     * @param RecursiveIteratorIterator       $iterator   iterator to recurse over
+     * @param sfEventDispatcher               $dispatcher main event dispatcher
+     * @param sfEvent                         $event      file detected event
+     * @param Mp3Indexer_Log_Client_Interface $log        log client instance
      */
     public function __construct(
         RecursiveIteratorIterator $iterator,
         sfEventDispatcher $dispatcher,
-        sfEvent $event
+        sfEvent $event,
+        Mp3Indexer_Log_Client_Interface $log
     ) {
         $this->_iterator = $iterator;
         $this->_event = $event;
         $this->_dispatcher = $dispatcher;
+        $this->_log = $log;
     }
 
     /**
@@ -47,6 +50,7 @@ class Mp3Indexer_Scanner
      */
     public function scan()
     {
+        $this->_log->log("Starting recursive scan");
         $this->_recurse($this->_iterator);
     }
 
