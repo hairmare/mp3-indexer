@@ -83,7 +83,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      * 
      * @return void
      */
-    protected function setNamespace($namespace)
+    final function setNamespace($namespace)
     {
         $this->_namespace = $namespace;
     }
