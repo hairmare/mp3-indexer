@@ -47,8 +47,7 @@ class Mp3Indexer_MwApiClient
         $apiurl,
         Mp3Indexer_Curl $curl,
         Mp3Indexer_Log_Client_Interface $log
-    )
-    {
+    ) {
         $this->_apiurl = $apiurl;
         $this->_curl = $curl;
         $this->_curl->setopt(CURLOPT_RETURNTRANSFER, 1);

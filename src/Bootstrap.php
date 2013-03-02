@@ -24,11 +24,13 @@ require_once dirname(__FILE__).
     '/../lib/sf-event-dispatcher/lib/sfEventDispatcher.php';
 
 // basic autoloader for Mp3Indexer_ Classes
-spl_autoload_register(function ($class) {
-    if (substr($class, 0, 10) == 'Mp3Indexer') {
-        require __DIR__.'/'.strtr($class, '_', '/').'.php';
+spl_autoload_register(
+    function ($class) {
+        if (substr($class, 0, 10) == 'Mp3Indexer') {
+            include __DIR__.'/'.strtr($class, '_', '/').'.php';
+        }
     }
-});
+);
 sfServiceContainerAutoloader::register();
     
 // setup dependency injection
