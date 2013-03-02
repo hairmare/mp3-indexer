@@ -39,16 +39,18 @@ class Mp3Indexer_MwApiClient
     /**
      * create new api instance
      * 
-     * @param String     $apiurl url to mediawikis api.php endpoint
-     * @param Mp3Indexer $curl   oo wrapper to curl 
+     * @param String                          $apiurl url to mediawikis api.php endpoint
+     * @param Mp3Indexer                      $curl   oo wrapper to curl 
+     * @param Mp3Indexer_Log_Client_Interface $log    logger instance
      */
-    public function __construct($apiurl, Mp3Indexer_Curl $curl)
+    public function __construct($apiurl, Mp3Indexer_Curl $curl, Mp3Indexer_Log_Client_Interface $log)
     {
         $this->_apiurl = $apiurl;
         $this->_curl = $curl;
         $this->_curl->setopt(CURLOPT_RETURNTRANSFER, 1);
         $this->_curl->setopt(CURLOPT_HEADER, 0);
         $this->_curl->setopt(CURLOPT_POST, 1);
+        $this->_log = $log;
     }
     
     /**
@@ -62,6 +64,8 @@ class Mp3Indexer_MwApiClient
      */
     public function login($username, $password, $domain = null)
     {
+        $this->_log->log(sprintf("login called for %s", $username));
+        
         $args = array(
                 'lgname' => $username, 
                 'lgpassword' => $password, 
@@ -109,6 +113,8 @@ class Mp3Indexer_MwApiClient
      */
     public function sfautoedit($form, $target, $query)
     {
+        $this->_log->log(sprintf("sfautoedit called for %s", $form));
+        
         $target = $this->_sanitizeTitle($target);
         return $this->_callApi(
             'sfautoedit',
