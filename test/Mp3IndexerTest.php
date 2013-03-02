@@ -83,22 +83,6 @@ class Mp3IndexerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * check if logger gets added to stack
-     * 
-     * @covers Mp3Indexer::addLogger
-     *
-     * @return void
-     */
-    public function testAddLogger()
-    {
-        $loggerMock = $this->getMockBuilder('Mp3Indexer_Log_Interface')->getMock();
-
-        $this->object->addLogger($loggerMock);
-
-        $this->assertSame($this->object->_loggerStack[0], $loggerMock);
-    }
-
-    /**
      * check for scanner call
      *
      * @covers Mp3Indexer::run
