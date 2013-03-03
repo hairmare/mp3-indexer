@@ -62,8 +62,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->setMethods(
                 array(
                     'setData',
-                    'getTarget',
-                    'getQuery'
+                    'getElements'
                 )
             );
         $this->logMock = $this
@@ -91,7 +90,10 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
         $audioTrackMapMock = $this
             ->audioTrackMapMock
             ->getMock();
-        
+
+        $audioTrackMapMock
+            ->expects($this->exactly(1))
+            ->method('setData');
         $mockData = array(
             'TST' => array('Hello World!')    
         );
