@@ -28,14 +28,26 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         
     }
     
+    /**
+     * Set array of artist - uri mapping
+     * 
+     * @param Array $data given array
+     * 
+     * @return void
+     */
     public function setArtists($data)
     {
-        
+        $this->_artists = $data;
     }
     
+    /**
+     * get array of artist - uri mappings
+     * 
+     * @return Array
+     */
     public function getArtists()
     {
-    
+        return $this->_artists;
     }
     
     /**
@@ -46,11 +58,15 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getArtist($name)
     {
-        
+        $artist = false;
+        if (array_key_exists($name, $this->_artists)) {
+            $artist = $this->_artists[$name];
+        }
+        return $artist;
     }
 
     /**
-     * return all mediaresource mapping for path segemments.
+     * return agent mapping for first matching segemment.
      * 
      * @see Mp3Indexer_Map_SemanticMediawiki::getElements()
      * 
@@ -61,11 +77,18 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         $namespace = $this->getNamespace();
         $base = '';
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
-            $base .= $dir.'/';
-            $elements[substr($namespace.$base, 0, -1)] = array(
-                self::MW_FORM.'[Locator]=' => substr($base, 0, -1)
-            );
+            $artistUri = $this->getArtist($dir);
+            if ($artistUri !== false) {
+                $base .= $dir.'/';
+                
+                return array(
+                    substr($namespace.$base, 0, -1) => array(
+                        'MediaResource[Locator]=' => substr($base, 0, -1),
+                        'Agent[IsDefinedBy]=' => $artistUri
+                    )
+                );
+            }
         }
-        return $elements;
+        return array();
     }
 }
