@@ -50,7 +50,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
             ->getMock();
         $this->artistsXml = simplexml_load_string (
             '<?xml version="1.0"?>
-            <api>
+            <api xmlns:Artist="https://example.com/wiki/Category:Artist">
               <query>
                 <printrequests>
                   <printrequest label="" typeid="_wpg" mode="2" />
