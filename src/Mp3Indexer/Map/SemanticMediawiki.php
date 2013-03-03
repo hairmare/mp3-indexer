@@ -32,6 +32,8 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     const ID3_YEAR = 'TYER';
     
     private $_data = array();
+    
+    private $_namespace = '';
 
     /**
      * return target page name for mediawiki
