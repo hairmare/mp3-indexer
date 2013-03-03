@@ -51,24 +51,6 @@ class Mp3Indexer_Map_MediaResourceTest extends PHPUnit_Framework_TestCase
         
         $this->object = new Mp3Indexer_Map_MediaResource();
     }
-    
-    /**
-     * test getTarget Method
-     *
-     * @return void
-     */
-    public function testGetTarget()
-    {
-        $data = array(
-            'file' => 'testdir/testfile'
-        );
-        $this->object->setData($data);
-        
-        $this->assertEquals(
-            $this->object->getTarget(),
-            'testdir/testfile'
-        );
-    }
 
     /**
      * test getElements Method
