@@ -34,15 +34,6 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     private $_data = array();
     
     private $_namespace = '';
-
-    /**
-     * return target page name for mediawiki
-     * 
-     * this could use some kind of hashing method based on the filename
-     * 
-     * @return String
-     */
-    public abstract function getTarget();
     
     /**
      * return multiple mediawiki target with data in one go
