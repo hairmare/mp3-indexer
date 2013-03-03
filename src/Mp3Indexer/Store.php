@@ -83,16 +83,19 @@ class Mp3Indexer_Store
             }
 
             $data['file'] = $file;
+            $elements = array();
+            
             foreach ($this->_maps AS $map) {
                 $map->setData($data);
-                
-                foreach ($map->getElements() AS $target => $query) {
-                    $this->_apiClient->sfautoedit(
-                        $map::MW_FORM, 
-                        $target, 
-                        $query
-                    );
-                }
+                $elements = array_merge($elements, $map->getElements());
+            }
+            
+            foreach ($elements AS $target => $query) {
+                $this->_apiClient->sfautoedit(
+                    $map::MW_FORM, 
+                    $target, 
+                    $query
+                );
             }
         } catch (Exception $e) {
             $this->_log->debug($e->getMessage());
