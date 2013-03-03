@@ -54,8 +54,13 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      * 
      * @return void
      */
-    public function setArtistsFromSmw(Mp3Indexer_MwApiClient $client, $query = '[[Category:Artist]]')
-    {
+    public function setArtistsFromSmw(
+        Mp3Indexer_MwApiClient $client, 
+        $query = '[[Category:Artist]]'
+    ) {
+        $this->setArtistsFromXml(
+            $client->ask($query)
+        );
     }
     
     /**
