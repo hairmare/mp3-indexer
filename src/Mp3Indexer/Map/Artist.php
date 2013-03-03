@@ -76,6 +76,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getArtist($name)
     {
+        $name = self::ARTIST_NS_PREFIX.':'.$name;
         $artist = false;
         if (array_key_exists($name, $this->_artists)) {
             $artist = $this->_artists[$name];
