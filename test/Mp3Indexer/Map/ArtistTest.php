@@ -81,7 +81,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $this->object->setArtistsFromXml($this->artistsXml);
         $this->assertEquals(
             $this->artists,
-            $this->getArtists()
+            $this->object->getArtists()
         );
     }
     
