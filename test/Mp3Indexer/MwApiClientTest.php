@@ -98,4 +98,22 @@ class Mp3Indexer_MwApiClientTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('<data>something</data>'));
         $this->object->sfautoedit('TestFrom', 'TestTarget', array());
     }
+    
+
+    /**
+     * simple incomplete test for ask
+     *
+     * @return void
+     */
+    public function testAsk()
+    {
+        $this->logMock
+            ->expects($this->atLeastOnce())
+            ->method('log');
+        $this->curlMock
+            ->expects($this->atLeastOnce())
+            ->method('exec')
+            ->will($this->returnValue('<data>something</data>'));
+        $this->object->ask('[[Artist]]');
+    }
 }
