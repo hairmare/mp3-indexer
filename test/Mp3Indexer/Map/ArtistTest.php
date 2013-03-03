@@ -65,7 +65,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
             </api>'    
         );
         $this->artists = array(
-            'The Hives' => 'https://example.com/wiki/Artist:The_Hives'    
+            'Artist:The Hives' => 'https://example.com/wiki/Artist:The_Hives'    
         );
         
         $this->object = new Mp3Indexer_Map_Artist;
@@ -112,22 +112,11 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $data = array(
             'file' => 'testdir/The Hives/testfile'
         );
+        $data[] = $this->textFrameMock;
         $this->object->setData($data);
         $this->object->setNamespace('Music');
         $this->object->setArtists($this->artists);
         
-        $this->textFrameMock
-            ->expects($this->atLeastOnce())
-            ->method('getIdentifier')
-            ->will($this->returnValue('TALB'));
-        $this->textFrameMock
-            ->expects($this->atLeastOnce())
-            ->method('getTexts')
-            ->will($this->returnValue(array('Hello World!')));
-        
-        $data[] = $this->textFrameMock;
-        $this->object->setData($data);
-    
         $this->assertEquals(
             array(
                 'Music:testdir/The Hives' => array(
