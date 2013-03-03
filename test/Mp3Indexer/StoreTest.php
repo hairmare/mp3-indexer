@@ -97,7 +97,7 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
         );
         $audioTrackMapMock
             ->expects($this->exactly(1))
-            ->method('getElemets')
+            ->method('getElements')
             ->will($this->returnValue($mockData));
 
         $this->eventMock
