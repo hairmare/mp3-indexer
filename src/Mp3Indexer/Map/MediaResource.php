@@ -29,7 +29,7 @@
      {
          $namespace = $this->getNamespace();
          $base = '';
-         foreach (explode(dirname($this->getFile()), '/') AS $dir) {
+         foreach (explode('/', dirname($this->getFile())) AS $dir) {
              $base .= $dir.'/';
              $elements[$namespace.$base] = array(
                  self::MW_FORM.'[Locator]=' => $base
