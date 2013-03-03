@@ -127,4 +127,44 @@ class Mp3Indexer_Map_AudioFileTest extends PHPUnit_Framework_TestCase
             )
         );
     }
+
+    /**
+     * test getElements Method
+     *
+     * @return void
+     */
+    public function testGetElements()
+    {
+        $data = array(
+            'file' => 'testdir/testfile'
+        );
+        $this->object->setData($data);
+        $this->assertEquals(
+            $this->object->getQuery(),
+            array('AudioTrack[Locator]=' => 'testdir/testfile')
+        );
+        
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getIdentifier')
+            ->will($this->returnValue('TALB'));
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getTexts')
+            ->will($this->returnValue(array('Hello World!')));
+        
+        $data[] = $this->textFrameMock;
+        $data[] = $this->textFrameMock;
+        $this->object->setData($data);
+    
+        $this->assertEquals(
+            $this->object->getElements(),
+            array(
+                'testdir/testfile' => array(
+                    'AudioTrack[Locator]=' => 'testdir/testfile',
+                    'AudioTrack[IsTrackOf]=' => 'Hello World!'
+                )    
+            )
+        );
+    }
 }
