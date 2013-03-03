@@ -132,6 +132,20 @@ class Mp3Indexer_MwApiClient
     }
     
     /**
+     * query smw using ask
+     * 
+     * @param String $query query in ask format 
+     * 
+     * @return SimpleXMLElement
+     */
+    public function ask($query)
+    {
+        $this->_log->log("ask called");
+        
+        return $this->_callApi('ask', array('query' => $query));
+    }
+    
+    /**
      * actual calls to api
      * 
      * Call the api using the given params. 
