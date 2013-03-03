@@ -81,7 +81,7 @@ class Mp3Indexer_Map_MediaResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'Music:testdir' => array(
-                    'MediaResource[Locator]=' => 'testdir/',
+                    'MediaResource[Locator]=' => 'testdir',
                 ),
                 'Music:testdir/testsubdir' => array(
                     'MediaResource[Locator]=' => 'testdir/testsubdir',
