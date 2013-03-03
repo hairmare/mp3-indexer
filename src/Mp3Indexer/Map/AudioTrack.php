@@ -35,15 +35,17 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
     /**
      * return name based on data from request
      * 
-     * @todo add namespace support
-     * 
      * @see Mp3Indexer_Map_SemanticMediawiki::getTarget()
      * 
      * @return String
      */
     public function getTarget()
     {
-        return (string) $this->getFile();
+        $ns = $this->getNamespace().':';
+        if ($ns === ':') {
+            $ns = '';
+        }
+        return $ns.(string) $this->getFile();
     }
     
     /**
