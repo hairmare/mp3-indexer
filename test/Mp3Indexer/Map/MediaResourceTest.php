@@ -60,9 +60,10 @@ class Mp3Indexer_Map_MediaResourceTest extends PHPUnit_Framework_TestCase
     public function testGetElements()
     {
         $data = array(
-            'file' => 'testdir/testfile'
+            'file' => 'testdir/testsubdir/testfile'
         );
         $this->object->setData($data);
+        $this->object->setNamespace('Music');
         
         $this->textFrameMock
             ->expects($this->atLeastOnce())
@@ -78,12 +79,15 @@ class Mp3Indexer_Map_MediaResourceTest extends PHPUnit_Framework_TestCase
         $this->object->setData($data);
     
         $this->assertEquals(
-            $this->object->getElements(),
             array(
-                'testdir' => array(
+                'Music:testdir' => array(
                     'MediaResource[Locator]=' => 'testdir/',
-                )    
-            )
+                ),
+                'Music:testdir/testsubdir' => array(
+                    'MediaResource[Locator]=' => 'testdir/testsubdir',
+                )
+            ),
+            $this->object->getElements()
         );
     }
 }
