@@ -39,7 +39,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         $artistNs = $namespaces[self::ARTIST_NS_PREFIX];
         
         foreach ($xmlData->query->results->children($artistNs) AS $result) {
-            $attributes = $results->attributes();
+            $attributes = $result->attributes();
             
             $this->_artists[(string) $attributes['fulltext']] = 
                 (string) $attributes['fullurl'];
