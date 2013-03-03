@@ -128,4 +128,24 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
             $this->object->getElements()
         );
     }
+    /**
+     * test getElements without match
+     *
+     * @return void
+     */
+    public function testGetElements()
+    {
+        $data = array(
+            'file' => 'testdir/Not The Hives/testfile'
+        );
+        $data[] = $this->textFrameMock;
+        $this->object->setData($data);
+        $this->object->setNamespace('Music');
+        $this->object->setArtists($this->artists);
+    
+        $this->assertEquals(
+            array(),
+            $this->object->getElements()
+        );
+    }
 }
