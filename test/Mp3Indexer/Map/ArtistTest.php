@@ -48,7 +48,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-        $this->artistsXml = simplexml_load_string (
+        $this->artistsXml = simplexml_load_string(
             '<?xml version="1.0"?>
             <api xmlns:Artist="https://example.com/wiki/Category:Artist">
               <query>
@@ -117,11 +117,12 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $this->object->setNamespace('Music');
         $this->object->setArtists($this->artists);
         
+        $uri = 'https://example.com/wiki/Artist:The_Hives';
         $this->assertEquals(
             array(
                 'Music:testdir/The Hives' => array(
                     'MediaResource[Locator]=' => 'testdir/The Hives',
-                    'Agent[IsDefinedBy]=' => 'https://example.com/wiki/Artist:The_Hives'
+                    'Agent[IsDefinedBy]=' => $uri
                 )    
             ),
             $this->object->getElements()
