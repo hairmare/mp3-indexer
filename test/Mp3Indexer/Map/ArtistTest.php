@@ -133,7 +133,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function testGetElements()
+    public function testGetElementsNoMatch()
     {
         $data = array(
             'file' => 'testdir/Not The Hives/testfile'
