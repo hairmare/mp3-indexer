@@ -47,6 +47,18 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
     }
     
     /**
+     * set artists by calling an swm query
+     * 
+     * @param Mp3Indexer_MwApiClient $client api client to use
+     * @param String                 $query  query string
+     * 
+     * @return void
+     */
+    public function setArtistsFromSmw(Mp3Indexer_MwApiClient $client, $query = '[[Category:Artist]]')
+    {
+    }
+    
+    /**
      * Set array of artist - uri mapping
      * 
      * @param Array $data given array
