@@ -31,8 +31,8 @@
          $base = '';
          foreach (explode('/', dirname($this->getFile())) AS $dir) {
              $base .= $dir.'/';
-             $elements[substr($namespace.$base, 0 -1)] = array(
-                 self::MW_FORM.'[Locator]=' => substr($base, 0 -1)
+             $elements[substr($namespace.$base, 0, -1)] = array(
+                 self::MW_FORM.'[Locator]=' => substr($base, 0, -1)
              );
          }
          return $elements;
