@@ -39,7 +39,7 @@
          return array();
      }
      
-     public function getQuery()
+     public function getQuery($form = self::MW_FORM)
      {
          return $this->_getQuery($this->_templateMap, self::MW_FORM);
      }
