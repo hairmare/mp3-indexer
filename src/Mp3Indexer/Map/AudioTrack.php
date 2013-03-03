@@ -41,11 +41,11 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getTarget()
     {
-        $ns = $this->getNamespace().':';
-        if ($ns === ':') {
-            $ns = '';
+        $namespace = $this->getNamespace().':';
+        if ($namespace === ':') {
+            $namespace = '';
         }
-        return $ns.(string) $this->getFile();
+        return $namespace.(string) $this->getFile();
     }
     
     /**
