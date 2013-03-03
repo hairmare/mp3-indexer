@@ -65,15 +65,6 @@ class Mp3Indexer_Map_MediaResourceTest extends PHPUnit_Framework_TestCase
         $this->object->setData($data);
         $this->object->setNamespace('Music');
         
-        $this->textFrameMock
-            ->expects($this->atLeastOnce())
-            ->method('getIdentifier')
-            ->will($this->returnValue('TALB'));
-        $this->textFrameMock
-            ->expects($this->atLeastOnce())
-            ->method('getTexts')
-            ->will($this->returnValue(array('Hello World!')));
-        
         $data[] = $this->textFrameMock;
         $data[] = $this->textFrameMock;
         $this->object->setData($data);
