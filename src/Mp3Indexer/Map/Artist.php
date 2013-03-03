@@ -35,7 +35,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function setArtistsFromXml($xmlData)
     {
-        $namespaces = $artistsXml->getDocNamespaces();
+        $namespaces = $xmlData->getDocNamespaces();
         $artistNs = $namespaces[self::ARTIST_NS_PREFIX];
         
         foreach ($xmlData->query->results->children($artistNs) AS $result) {
