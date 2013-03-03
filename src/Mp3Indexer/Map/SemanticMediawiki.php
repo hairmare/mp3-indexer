@@ -43,6 +43,13 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     public abstract function getTarget();
     
     /**
+     * return multiple mediawiki target with data in one go
+     * 
+     * @return Array
+     */
+    public abstract function getElements();
+    
+    /**
      * return an array of arguments to the sfautoedit api method query param
      * 
      * @param String $form name of form to use
