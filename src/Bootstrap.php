@@ -88,6 +88,11 @@ $sc->register('mwapiclient', 'Mp3Indexer_MwApiClient')
 // mappers for mediawiki pages
 $sc->register('mapaudiotrack', 'Mp3Indexer_Map_AudioTrack');
 $sc->register('mapmediaresource', 'Mp3Indexer_Map_MediaResource');
+$sc->register('mapartist', 'Mp3Indexer_Map_Artist')
+    ->addMethodCall(
+        'setArtistsFromSmw', 
+        array(new sfServiceReference('mwapiclient'))
+    );
 
 // and my workhorses
 $sc->register('mp3scanner', 'Mp3Indexer_Scanner')
@@ -111,6 +116,10 @@ $sc->register('mp3store', 'Mp3Indexer_Store')
     ->addMethodCall(
         'addMap',
         array(new sfServiceReference('mapaudiotrack'))
+    )
+    ->addMethodCall(
+        'addMap',
+        array(new sfServiceReference('mapartist'))
     );
 
 // loggers
