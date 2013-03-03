@@ -68,9 +68,6 @@ $sc->register('iteratoriterator', 'RecursiveIteratorIterator')
 $sc->register('mp3fileevent', 'sfEvent')
     ->addArgument(new stdClass) // empty context because i dont care
     ->addArgument('mp3scan.file');
-$sc->register('mp3lintevent', 'sfEvent')
-    ->addArgument(new stdClass) // empty context because i dont care
-    ->addArgument('mp3scan.lint');
 $sc->register('mp3dataevent', 'sfEvent')
     ->addArgument(new stdClass)
     ->addArgument('mp3scan.data');
@@ -115,10 +112,6 @@ $sc->register('mp3store', 'Mp3Indexer_Store')
         'addMap',
         array(new sfServiceReference('mapaudiotrack'))
     );
-
-// linting
-$sc->register('mp3lint.id3v34', 'Mp3Indexer_Linter_ID3V24')
-    ->addArgument(new sfServiceReference('dispatcher'));
 
 // loggers
 $sc->register('logstdout', 'Mp3Indexer_Log_Stdout')
