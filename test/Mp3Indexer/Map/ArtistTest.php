@@ -92,12 +92,14 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
      */
     public function testSetArtistsFromSmw()
     {
-        $this->smwMock
+        $smwMock = $this->getMockBuilder('Mp3Indexer_MwApiClient')
+            ->getMock();
+        $smwMock
             ->expects($this->once())
             ->method('ask')
             ->will($this->returnValue($this->artistsXml));
         
-        $this->object->setArtistsFromSmw($this->smwMock);
+        $this->object->setArtistsFromSmw($smwMock);
         $this->assertEquals(
             $this->artists,
             $this->object->getArtists()
