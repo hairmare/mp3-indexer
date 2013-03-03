@@ -85,13 +85,12 @@ class Mp3Indexer_Store
             $data['file'] = $file;
             foreach ($this->_maps AS $map) {
                 $map->setData($data);
-                $target = $map->getTarget();
                 
-                if ($target) {
+                foreach ($map->getElements() AS $target => $query) {
                     $this->_apiClient->sfautoedit(
                         $map::MW_FORM, 
                         $target, 
-                        $map->getQuery()
+                        $query
                     );
                 }
             }
