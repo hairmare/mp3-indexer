@@ -23,6 +23,8 @@
  */
 class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
 {
+    private $_artists = array();
+    
     public function setArtistsFromXml($xmlData)
     {
         

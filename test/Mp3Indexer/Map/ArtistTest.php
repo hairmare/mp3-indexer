@@ -114,6 +114,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         );
         $this->object->setData($data);
         $this->object->setNamespace('Music');
+        $this->object->setArtists($this->artists);
         
         $this->textFrameMock
             ->expects($this->atLeastOnce())
