@@ -24,23 +24,17 @@
  class Mp3Indexer_Map_MediaResource extends Mp3Indexer_Map_SemanticMediawiki {
 
      const MW_FORM = 'MediaResource';
-     
-     private $_templateMap = array(
-             self::ID3_ALBUM  => 'MediaResource[Locator]',
-     );
-     
-     public function getFile()
-     {
-         return parent::getFile();
-     }
 
      public function getElements()
      {
-         return array();
-     }
-     
-     public function getQuery($form = self::MW_FORM)
-     {
-         return $this->_getQuery($this->_templateMap, self::MW_FORM);
+         $namespace = $this->getNamespace();
+         $base = '';
+         foreach (explode(dirname($this->getFile())) AS $dir) {
+             $base .= $dir.'/';
+             $elements[$namepsace.$base] = array(
+                 self::MW_FORM.'[Locator]=' => $base
+             );
+         }
+         return $elements;
      }
  }
