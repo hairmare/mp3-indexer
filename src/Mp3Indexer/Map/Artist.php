@@ -80,9 +80,9 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         $base = '';
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
             $artistUri = $this->getArtist($dir);
+            $base .= $dir.'/';
+            
             if ($artistUri !== false) {
-                $base .= $dir.'/';
-                
                 return array(
                     substr($namespace.$base, 0, -1) => array(
                         'MediaResource[Locator]=' => substr($base, 0, -1),
