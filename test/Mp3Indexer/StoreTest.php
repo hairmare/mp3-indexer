@@ -80,8 +80,6 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
     /**
      * test public method and private dependants
      *
-     * @covers Mp3Indexer_Store
-     *
      * @return void
      */
     public function testCreateOrUpdate()
@@ -94,17 +92,13 @@ class Mp3Indexer_StoreTest extends PHPUnit_Framework_TestCase
             ->audioTrackMapMock
             ->getMock();
         
+        $mockData = array(
+            'TST' => array('Hello World!')    
+        );
         $audioTrackMapMock
             ->expects($this->exactly(1))
-            ->method('setData');
-        $audioTrackMapMock
-            ->expects($this->exactly(1))
-            ->method('getTarget')
-            ->will($this->returnValue('TST'));
-        $audioTrackMapMock
-            ->expects($this->exactly(1))
-            ->method('getQuery')
-            ->will($this->returnValue(array('Hello World!')));
+            ->method('getElemets')
+            ->will($this->returnValue($mockData));
 
         $this->eventMock
             ->expects($this->at(0))
