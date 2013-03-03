@@ -98,7 +98,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
         if ($this->_namespace !== '') {
             $namespace = $this->_namespace.':';
         } else {
-            $namspace = '';
+            $namespace = '';
         }
         return $namespace;
     }
