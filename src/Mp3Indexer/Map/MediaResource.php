@@ -31,7 +31,7 @@
          $base = '';
          foreach (explode(dirname($this->getFile()), '/') AS $dir) {
              $base .= $dir.'/';
-             $elements[$namepsace.$base] = array(
+             $elements[$namespace.$base] = array(
                  self::MW_FORM.'[Locator]=' => $base
              );
          }
