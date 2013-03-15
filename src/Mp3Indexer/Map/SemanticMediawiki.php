@@ -104,7 +104,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     final function getNamespace($namespace_type = self::NS_MUSIC)
     {
         if ($this->_namespaces[$namespace_type] !== '') {
-            $namespace = $this->_namespace[$namespace_type].':';
+            $namespace = $this->_namespaces[$namespace_type].':';
         } else {
             $namespace = '';
         }
