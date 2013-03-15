@@ -154,24 +154,27 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $this->assertContains(
             'Music:testdir/The Hives',
             array_keys($articles),
-            print_r($articles, true)
+            print_r(array_keys($articles), true)
         );
         $this->assertContains(
             'Artist:The Hives',
-            array_keys($articles)
+            array_keys($articles),
+            print_r(array_keys($articles), true)
         );
         $this->assertEquals(
             array(
                 'MediaResource[Locator]=' => 'testdir/The Hives',
                 'Agent[IsDefinedBy]=' => $uri
             ),
-            $articles['Music:testdir/The Hives']
+            $articles['Music:testdir/The Hives'],
+            print_r($articles['Music:testdir/The Hives'], true)
         );
         $this->assertEquals(
             array(
                     'Agent[Name]=' => 'The Hives'
             ),
-            $articles['Artist:The Hives']
+            $articles['Artist:The Hives'],
+            print_r($articles['Artist:The Hives'], true)
         );
     }
     
