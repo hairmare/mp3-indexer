@@ -137,7 +137,17 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $data[] = $this->textFrameMock;
         $this->object->setData($data);
         $this->object->setNamespace('Music');
+        $this->object->setNamespace('Artist', Mp3Indexer_Map_Artist::NS_ARTIST);
         $this->object->setArtists($this->artists);
+
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getIdentifier')
+            ->will($this->returnValue('TPE1'));
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getTexts')
+            ->will($this->returnValue(array('The Hives')));
         
         $uri = 'https://example.com/wiki/Artist:The_Hives';
         $this->assertEquals(
@@ -145,11 +155,15 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
                 'Music:testdir/The Hives' => array(
                     'MediaResource[Locator]=' => 'testdir/The Hives',
                     'Agent[IsDefinedBy]=' => $uri
-                )    
+                ),
+                'Artist:The Hives' => array(
+                    'Agent[Name]=' => 'The Hives'
+                )
             ),
             $this->object->getElements()
         );
     }
+    
     /**
      * test getElements without match
      *
