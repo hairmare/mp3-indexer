@@ -141,26 +141,36 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $this->object->setArtists($this->artists);
 
         $this->textFrameMock
-            ->expects($this->atLeastOnce())
+            ->expects($this->once())
             ->method('getIdentifier')
             ->will($this->returnValue('TPE1'));
         $this->textFrameMock
-            ->expects($this->atLeastOnce())
+            ->expects($this->once())
             ->method('getTexts')
             ->will($this->returnValue(array('The Hives')));
         
         $uri = 'https://example.com/wiki/Artist:The_Hives';
+        $articles = $this->object->getElements();
+        $this->assertContains(
+            'Music:testdir/The Hives',
+            array_keys($articles)
+        );
+        $this->assertContains(
+            'Artist:The Hives',
+            array_keys($articles)
+        );
         $this->assertEquals(
             array(
-                'Music:testdir/The Hives' => array(
-                    'MediaResource[Locator]=' => 'testdir/The Hives',
-                    'Agent[IsDefinedBy]=' => $uri
-                ),
-                'Artist:The Hives' => array(
-                    'Agent[Name]=' => 'The Hives'
-                )
+                'MediaResource[Locator]=' => 'testdir/The Hives',
+                'Agent[IsDefinedBy]=' => $uri
             ),
-            $this->object->getElements()
+            $articles['Music:testdir/The Hives']
+        );
+        $this->assertEquals(
+            array(
+                    'Agent[Name]=' => 'The Hives'
+            ),
+            $articles['Artist:The Hives']
         );
     }
     
