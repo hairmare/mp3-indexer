@@ -122,6 +122,9 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
                     substr($namespace.$base, 0, -1) => array(
                         'MediaResource[Locator]=' => substr($base, 0, -1),
                         'Agent[IsDefinedBy]=' => $artistUri
+                    ),
+                    self::NS_ARTIST.':'.$dir => array(
+                        'Agent[Name]=' => $dir
                     )
                 );
             }
