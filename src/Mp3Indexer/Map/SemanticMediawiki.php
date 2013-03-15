@@ -30,10 +30,15 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     const ID3_ARTIST = 'TPE1';
     const ID3_ALBUM = 'TALB';
     const ID3_YEAR = 'TYER';
+    const NS_ARTIST = 'Artist';
+    const NS_MUSIC = 'Music';
     
     private $_data = array();
     
-    private $_namespace = '';
+    private $_namespaces = array(
+        self::NS_MUSIC => '',
+        self::NS_ARTIST => ''    
+    );
     
     /**
      * return multiple mediawiki target with data in one go
@@ -79,24 +84,27 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     /**
      * set namespace for getTarget
      * 
-     * @param String $namespace Namespace
+     * @param String $namespace      Namespace
+     * @param String $namespace_type Type self::NS_<type>
      * 
      * @return void
      */
-    final function setNamespace($namespace)
+    final function setNamespace($namespace, $namespace_type = self::NS_MUSIC)
     {
-        $this->_namespace = $namespace;
+        $this->_namespaces[$namespace_type] = $namespace;
     }
     
     /**
      * get namespace for getTarget
      * 
+     * @param String $namespace_type Type self::NS_<type>
+     * 
      * @return String
      */
-    final function getNamespace()
+    final function getNamespace($namespace_type = self::NS_MUSIC)
     {
-        if ($this->_namespace !== '') {
-            $namespace = $this->_namespace.':';
+        if ($this->_namespaces[$namespace_type] !== '') {
+            $namespace = $this->_namespace[$namespace_type].':';
         } else {
             $namespace = '';
         }
