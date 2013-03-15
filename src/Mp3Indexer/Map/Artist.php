@@ -23,7 +23,7 @@
  */
 class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
 {
-    const ARTIST_NS_PREFIX = 'Artist';
+    const NS_ARTIST = 'Artist';
     private $_artists = array();
     
     /**
@@ -36,7 +36,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
     public function setArtistsFromXml($xmlData)
     {
         $namespaces = $xmlData->getDocNamespaces();
-        $artistNs = $namespaces[self::ARTIST_NS_PREFIX];
+        $artistNs = $namespaces[self::NS_ARTIST];
         
         foreach ($xmlData->query->results->children($artistNs) AS $result) {
             $attributes = $result->attributes();
@@ -94,7 +94,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getArtist($name)
     {
-        $name = self::ARTIST_NS_PREFIX.':'.$name;
+        $name = self::NS_ARTIST.':'.$name;
         $artist = false;
         if (array_key_exists($name, $this->_artists)) {
             $artist = $this->_artists[$name];
