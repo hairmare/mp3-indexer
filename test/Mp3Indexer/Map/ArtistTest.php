@@ -153,7 +153,8 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $articles = $this->object->getElements();
         $this->assertContains(
             'Music:testdir/The Hives',
-            array_keys($articles)
+            array_keys($articles),
+            print_r($articles, true)
         );
         $this->assertContains(
             'Artist:The Hives',
