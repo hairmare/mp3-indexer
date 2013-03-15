@@ -141,11 +141,11 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         $this->object->setArtists($this->artists);
 
         $this->textFrameMock
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('getIdentifier')
             ->will($this->returnValue('TPE1'));
         $this->textFrameMock
-            ->expects($this->once())
+            ->expects($this->atLeastOnce())
             ->method('getTexts')
             ->will($this->returnValue(array('The Hives')));
         
