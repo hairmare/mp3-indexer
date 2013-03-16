@@ -90,8 +90,6 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      * @param String $name Artist name
      *
      * @return String|Boolean
-     * 
-     * @todo create new artist Uris and return those
      */
     public function getArtistUri($name)
     {
