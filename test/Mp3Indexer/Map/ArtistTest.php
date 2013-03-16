@@ -186,16 +186,32 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
     public function testGetElementsNoMatch()
     {
         $data = array(
-            'file' => 'testdir/Not The Hives/testfile'
+            'file' => 'testdir/The Hives/testfile'
         );
         $data[] = $this->textFrameMock;
         $this->object->setData($data);
         $this->object->setNamespace('Music');
         $this->object->setArtists($this->artists);
-    
-        $this->assertEquals(
-            array(),
-            $this->object->getElements()
+
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getIdentifier')
+            ->will($this->returnValue('TPE1'));
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getTexts')
+            ->will($this->returnValue(array('Not The Hives')));
+
+        $articles = $this->object->getElements();
+        $this->assertNotContains(
+            'Artist:The Hives',
+            array_keys($articles),
+            print_r(array_keys($articles), true)
+        );
+        $this->assertNotContains(
+            'Artist:Not The Hives',
+            array_keys($articles),
+            print_r(array_keys($articles), true)
         );
     }
 }
