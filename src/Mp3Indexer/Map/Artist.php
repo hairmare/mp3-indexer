@@ -98,7 +98,7 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         if (array_key_exists($name, $this->_artists)) {
             $artist = $this->_artists[$name];
         } else {
-            $artist = dirname(reset($this->_artists)).'/'.strtr(' ', '_', $name);
+            $artist = dirname(reset($this->_artists)).'/'.strtr($name, ' ', '_');
         }
         return $artist;
     }
