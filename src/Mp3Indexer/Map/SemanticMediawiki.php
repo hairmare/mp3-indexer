@@ -168,7 +168,7 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
      *
      * @return Array
      * 
-     * @todo readd listed classes as needed
+     * re-add listed classes as needed
      * - Zend_Media_Id3_LinkFrame
      * - Zend_Media_Id3_Frame_Ufid
      * - Zend_Media_Id3_Frame_Apic
