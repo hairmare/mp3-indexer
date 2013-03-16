@@ -112,7 +112,6 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
     {
         $artist = $this->getString(self::ID3_ARTIST);
         
-        $namespace = $this->getNamespace();
         $base = '';
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
             $base .= $dir.'/';
