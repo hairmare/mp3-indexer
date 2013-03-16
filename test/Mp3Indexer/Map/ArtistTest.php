@@ -121,7 +121,7 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             'https://example.com/wiki/Artist:The_Hives_Coverband',
-            $this->object->getArtistUri('The Hives Coverand')
+            $this->object->getArtistUri('The Hives Coverband')
         );
     }
 
