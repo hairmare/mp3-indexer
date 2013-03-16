@@ -112,15 +112,15 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
      * 
      * @return void
      */
-    public function testGetArtist()
+    public function testGetArtistUri()
     {
         $this->object->setArtists($this->artists);
         $this->assertEquals(
             'https://example.com/wiki/Artist:The_Hives',
-            $this->object->getArtist('The Hives')
+            $this->object->getArtistUri('The Hives')
         );
         $this->assertFalse(
-            $this->object->getArtist('Not The Hives')
+            $this->object->getArtistUri('Not The Hives')
         );
     }
 

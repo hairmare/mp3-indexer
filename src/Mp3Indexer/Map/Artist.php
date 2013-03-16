@@ -85,13 +85,15 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
     }
     
     /**
-     * get artist from internal artist list
+     * get artisturi from internal artist list
      * 
      * @param String $name Artist name
      *
      * @return String|Boolean
+     * 
+     * @todo create new artist Uris and return those
      */
-    public function getArtist($name)
+    public function getArtistUri($name)
     {
         $name = self::NS_ARTIST.':'.$name;
         $artist = false;
@@ -116,11 +118,8 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
             $base .= $dir.'/';
             if ($artist == $dir) {
-                $artistUri = $this->getArtist($dir);
+                $artistUri = $this->getArtistUri($dir);
             
-                if ($artistUri === false) {
-                    // @todo create new artist Uris
-                }
                 return array(
                     $this->getNamespace().substr($base, 0, -1) => array(
                         'MediaResource[Locator]=' => substr($base, 0, -1),
