@@ -119,8 +119,9 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
             'https://example.com/wiki/Artist:The_Hives',
             $this->object->getArtistUri('The Hives')
         );
-        $this->assertFalse(
-            $this->object->getArtistUri('Not The Hives')
+        $this->assertEquals(
+            'https://example.com/wiki/Artist:The_Hives_Coverband',
+            $this->object->getArtistUri('The Hives Coverand')
         );
     }
 
