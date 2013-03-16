@@ -110,13 +110,18 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
      */
     public function getElements()
     {
+        $artist = $this->getString(self::ID3_ARTIST);
+        
         $namespace = $this->getNamespace();
         $base = '';
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
-            $artistUri = $this->getArtist($dir);
-            $base .= $dir.'/';
+            if ($artist == $dir) {
+                $artistUri = $this->getArtist($dir);
+                $base .= $dir.'/';
             
-            if ($artistUri !== false) {
+                if ($artistUri === false) {
+                    // @todo create new artist Uris
+                }
                 return array(
                     substr($namespace.$base, 0, -1) => array(
                         'MediaResource[Locator]=' => substr($base, 0, -1),
