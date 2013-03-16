@@ -214,4 +214,58 @@ class Mp3Indexer_Map_ArtistTest extends PHPUnit_Framework_TestCase
             print_r(array_keys($articles), true)
         );
     }
+    
+    /**
+     * test getElements Method when adding new Band
+     *
+     * @return void
+     */
+    public function testGetElementsNewAgent()
+    {
+        $data = array(
+            'file' => 'testdir/The Hives Coverband/testfile'
+        );
+        $data[] = $this->textFrameMock;
+        $this->object->setData($data);
+        $this->object->setNamespace('Music');
+        $this->object->setNamespace('Artist', Mp3Indexer_Map_Artist::NS_ARTIST);
+        $this->object->setArtists($this->artists);
+    
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getIdentifier')
+            ->will($this->returnValue('TPE1'));
+        $this->textFrameMock
+            ->expects($this->atLeastOnce())
+            ->method('getTexts')
+            ->will($this->returnValue(array('The Hives Coverband')));
+    
+        $uri = 'https://example.com/wiki/Artist:The_Hives_Coverband';
+        $articles = $this->object->getElements();
+        $this->assertContains(
+            'Music:testdir/The Hives Coverband',
+            array_keys($articles),
+            print_r(array_keys($articles), true)
+        );
+        $this->assertContains(
+            'Artist:The Hives Coverband',
+            array_keys($articles),
+            print_r(array_keys($articles), true)
+        );
+        $this->assertEquals(
+            array(
+                'MediaResource[Locator]=' => 'testdir/The Hives Coverband',
+                'Agent[IsDefinedBy]=' => $uri
+            ),
+            $articles['Music:testdir/The Hives Coverband'],
+            print_r($articles['Music:testdir/The Hives Coverband'], true)
+        );
+        $this->assertEquals(
+            array(
+                'Agent[Name]=' => 'The Hives Coverband'
+            ),
+            $articles['Artist:The Hives Coverband'],
+            print_r($articles['Artist:The Hives Coverband'], true)
+        );
+    }
 }
