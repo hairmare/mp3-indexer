@@ -116,8 +116,8 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
         $base = '';
         foreach (explode('/', dirname($this->getFile())) AS $dir) {
             if ($artist == $dir) {
-                $artistUri = $this->getArtist($dir);
                 $base .= $dir.'/';
+                $artistUri = $this->getArtist($dir);
             
                 if ($artistUri === false) {
                     // @todo create new artist Uris
