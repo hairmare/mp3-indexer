@@ -123,12 +123,12 @@ class Mp3Indexer_Map_Artist extends Mp3Indexer_Map_SemanticMediawiki
                     // @todo create new artist Uris
                 }
                 return array(
-                    substr($namespace.$base, 0, -1) => array(
+                    $this->getNamespace().substr($base, 0, -1) => array(
                         'MediaResource[Locator]=' => substr($base, 0, -1),
                         'Agent[IsDefinedBy]=' => $artistUri
                     ),
-                    $this->getNamespace(self::NS_ARTIST).$dir => array(
-                        'Agent[Name]=' => $dir
+                    $this->getNamespace(self::NS_ARTIST).$artist => array(
+                        'Agent[Name]=' => $artist
                     )
                 );
             }
