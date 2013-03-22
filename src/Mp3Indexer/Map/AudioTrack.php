@@ -33,7 +33,7 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
         self::ID3_GENRE     => 'AudioTrack[EBUContentGenreCS]',
         self::ID3_ALBUM     => 'Part[IsPartOf]',
         self::ID3_NUMBERPOS => 'Part[PartNumber]',
-        self::ID_TITLE      => 'Part[PartName]'
+        self::ID3_TITLE      => 'Part[PartName]'
     );
     
     /**
