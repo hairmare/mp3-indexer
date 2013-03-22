@@ -26,10 +26,14 @@ class Mp3Indexer_Map_AudioTrack extends Mp3Indexer_Map_SemanticMediawiki
     const MW_FORM = 'AudioTrack';
     
     protected $templateMap = array(
-        self::ID3_ALBUM  => 'AudioTrack[IsTrackOf]',
-        self::ID3_TITLE  => 'AudioTrack[TrackName]',
-        self::ID3_ARTIST => 'AudioTrack[HasCreator]',
-        self::ID3_YEAR   => 'AudioTrack[RecordDate]'
+        self::ID3_ALBUM     => 'AudioTrack[IsTrackOf]',
+        self::ID3_TITLE     => 'AudioTrack[TrackName]',
+        self::ID3_ARTIST    => 'AudioTrack[HasCreator]',
+        self::ID3_YEAR      => 'AudioTrack[RecordDate]',
+        self::ID3_GENRE     => 'AudioTrack[EBUContentGenreCS]',
+        self::ID3_ALBUM     => 'Part[IsPartOf]',
+        self::ID3_NUMBERPOS => 'Part[PartNumber]',
+        self::ID_TITLE      => 'Part[PartName]'
     );
     
     /**
