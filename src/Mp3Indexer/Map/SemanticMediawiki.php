@@ -30,6 +30,9 @@ abstract class Mp3Indexer_Map_SemanticMediawiki
     const ID3_ARTIST = 'TPE1';
     const ID3_ALBUM = 'TALB';
     const ID3_YEAR = 'TYER';
+    const ID3_NUMBERPOS = 'TRCK';
+    const ID3_GENRE = 'TCON';
+    
     const NS_ARTIST = 'Artist';
     const NS_MUSIC = 'Music';
     
